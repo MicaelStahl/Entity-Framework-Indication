@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.539
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entity-Framework-Indication", "Entity-Framework-Indication\Entity-Framework-Indication.csproj", "{DDA96664-49D8-466B-ACFD-81B3CC686397}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DDA96664-49D8-466B-ACFD-81B3CC686397}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDA96664-49D8-466B-ACFD-81B3CC686397}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDA96664-49D8-466B-ACFD-81B3CC686397}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDA96664-49D8-466B-ACFD-81B3CC686397}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {031CCBA5-F9C7-4092-96FC-F9CFBA9DDD6C}
+	EndGlobalSection
+EndGlobal

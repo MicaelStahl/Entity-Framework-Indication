@@ -1,0 +1,12 @@
+﻿body {
+    background-color: darkslategrey;
+    color: white;
+}
+
+#main-nav {
+    margin: 0 0 50px 0;
+}
+#funny-llama {
+    height: 40px;
+    width: 60px;
+}
