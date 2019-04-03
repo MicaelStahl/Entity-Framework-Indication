@@ -12,12 +12,12 @@ namespace Entity_Framework_Indication.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        [MaxLength(25)]
+        [StringLength(25, ErrorMessage = "Title cannot be longer than 25 characters.")]
         public string Title { get; set; }
         [Required]
-        [MaxLength(50)]
+        [StringLength(50, ErrorMessage = "Subject cannot be longer than 50 characters.")]
         public string Subject { get; set; }
-        [MaxLength(5)]
+        [StringLength(3, ErrorMessage = "Grades cannot be longer than 3 characters.")]
         public string Grades { get; set; }
 
         public Teacher Teacher { get; set; }

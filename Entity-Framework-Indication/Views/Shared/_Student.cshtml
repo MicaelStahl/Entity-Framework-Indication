@@ -1,0 +1,35 @@
+﻿@model Student
+
+<tr class="row">
+    <td class="col-1 border">@Model.Id</td>
+    <td class="col-2 border">@Model.FirstName</td>
+    <td class="col-2 border">@Model.SecondName</td>
+    <td class="col-1 border">@Model.SchoolYear</td>
+    <td class="col-2 border">@Model.PhoneNumber</td>
+    @if (Model.Courses != null)
+    {
+        foreach (var item in Model.Courses)
+        {
+            <td class="border">@item.Course</td>
+        }
+    }
+    <td class=" border">
+
+        <a asp-action="AddCourse" asp-controller="Student" asp-route-id="@Model.Id">
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <input class="btn btn-warning" type="submit" name="Id" value="Add course" />
+        </a>
+        <a asp-action="Edit" asp-controller="Student" asp-route-id="@Model.Id">
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <input class="btn btn-warning" type="submit" name="Id" value="Edit" />
+        </a>
+        <a asp-action="Details" asp-controller="Student" asp-route-id="@Model.Id">
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <input class="btn btn-info" type="submit" name="Id" value="Details" />
+        </a>
+        <a asp-action="Remove" asp-controller="Student" , asp-route-id="@Model.Id">
+            <input type="hidden" name="Edit" value="@Model.Id" />
+            <input class="btn btn-danger" type="submit" name="Edit" value="Delete" />
+        </a>
+    </td>
+</tr>

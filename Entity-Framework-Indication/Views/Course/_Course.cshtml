@@ -1,0 +1,38 @@
+﻿@model  Course
+
+<tr class="row">
+    <td class="col-1 border">@Model.Id</td>
+    <td class="col-2 border">@Model.Title</td>
+    <td class="col-2 border">@Model.Subject</td>
+    <td class="col-2 border">@Model.Grades</td>
+    @if (Model.Students != null)
+    {
+        foreach (var item in Model.Students)
+        {
+            <td class="col-2 border">@item.StudentId</td>
+            <td class="col-2 border">@item.Student</td>
+        }
+    }
+    @if (Model.Assignments != null)
+    {
+        foreach (var item in Model.Assignments)
+        {
+            <td class="col-2 border">@item</td>
+        }
+    }
+    <td class=" border">
+
+        <a asp-action="Edit" asp-controller="Course" asp-route-id="@Model.Id">
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <input class="btn btn-warning" type="submit" name="Id" value="Edit" />
+        </a>
+        <a asp-action="Details" asp-controller="Course" asp-route-id="@Model.Id">
+            <input type="hidden" name="Id" value="@Model.Id" />
+            <input class="btn btn-info" type="submit" name="Id" value="Details" />
+        </a>
+        <a asp-action="Remove" asp-controller="Course" , asp-route-id="@Model.Id">
+            <input type="hidden" name="Edit" value="@Model.Id" />
+            <input class="btn btn-danger" type="submit" name="Edit" value="Delete" />
+        </a>
+    </td>
+</tr>

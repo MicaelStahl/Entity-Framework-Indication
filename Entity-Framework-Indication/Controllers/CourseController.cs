@@ -23,16 +23,22 @@ namespace Entity_Framework_Indication.Controllers
         // the blueprint atm. It's bound to change.
         public IActionResult Index()
         {
-            return View();
+            return View(_courseDB.AllCourses());
         }
 
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
         public IActionResult Create(Course course)
         {
             if (ModelState.IsValid)
             {
                 _courseDB.CreateCourse(course);
 
-                return View(_courseDB.AllCourses());
+                return RedirectToAction(nameof(Index));
             }
             return View();
         }

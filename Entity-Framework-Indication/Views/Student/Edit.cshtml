@@ -1,0 +1,47 @@
+﻿@model Student
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Student Edit</h1>
+
+<form method="post" class="form-text offset-1">
+    <input type="text" asp-for="FirstName" value="@Model.FirstName" />
+    <label>Firstname</label>
+    <br />
+    <br />
+    <input type="text" asp-for="SecondName" value="@Model.SecondName" />
+    <label>Secondname</label>
+    <br />
+    <br />
+    <input type="text" asp-for="SchoolYear" value="@Model.SchoolYear" />
+    <label>Schoolyear</label>
+    <br />
+    <br />
+    <input type="text" asp-for="PhoneNumber" value="@Model.PhoneNumber" />
+    <label>Phonenumber</label>
+    <br />
+    <br />
+    @if (Model.Courses != null)
+    {
+        foreach (var item in Model.Courses)
+        {
+            <input type="text" value="@item.Course" disabled />
+        }
+    }
+    else
+    {
+        <p>@Model.FirstName @Model.SecondName doesn't have any classes.</p>
+    }
+    <br />
+    <a asp-action="Edit" asp-controller="Student">
+        <input type="submit" class="btn btn-warning" value="Submit" />
+    </a>
+
+    <a asp-action="Index" asp-controller="Home">
+        <input type="submit" class="btn btn-primary" value="Go back" />
+    </a>
+    <a asp-action="Remove" asp-controller="Student">
+        <input type="submit" class="btn btn-danger" value="Remove" />
+</a>
+</form>

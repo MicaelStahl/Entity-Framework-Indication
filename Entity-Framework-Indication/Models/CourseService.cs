@@ -23,8 +23,7 @@ namespace Entity_Framework_Indication.Models
         public Course CreateCourse(Course course)
         {
             if (string.IsNullOrWhiteSpace(course.Title) ||
-                string.IsNullOrWhiteSpace(course.Subject) ||
-                string.IsNullOrWhiteSpace(course.Grades))
+                string.IsNullOrWhiteSpace(course.Subject))
             {
                 return null;
             }

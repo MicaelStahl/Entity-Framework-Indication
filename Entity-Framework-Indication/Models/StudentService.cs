@@ -1,4 +1,5 @@
 ﻿using Entity_Framework_Indication.Interfaces;
+using Entity_Framework_Indication.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace Entity_Framework_Indication.Models
             _db = studentDbContext;
         }
 
+        public StudentService() { }
+
         public List<Student> AllStudents()
         {
             return _db.Students.ToList();
@@ -30,7 +33,7 @@ namespace Entity_Framework_Indication.Models
             return newStudent;
         }
 
-        public bool DeleteStudent(int id)
+        public bool DeleteStudent(int? id)
         {
             Student student = _db.Students.SingleOrDefault(x => x.Id == id);
 
@@ -43,7 +46,7 @@ namespace Entity_Framework_Indication.Models
             return false;
         }
 
-        public bool EditStudent(Student student)
+        public Student EditStudent(Student student)
         {
             Student Original = _db.Students.SingleOrDefault(x => x.Id == student.Id);
 
@@ -57,14 +60,27 @@ namespace Entity_Framework_Indication.Models
 
                 _db.SaveChanges();
 
-                return true;
+                return Original;
             }
-            return false;
+            return null;
         }
 
-        public Student FindStudent(int id)
+        public Student FindStudent(int? id)
         {
             return _db.Students.SingleOrDefault(x => x.Id == id);
         }
+
+        //public List<StudentsCourses> UpdateCourse(int? id, StudentsCourses course)
+        //{
+        //    if (id != null || course != null)
+        //    {
+        //        Student studentCourse = _db.Students.SingleOrDefault(x => x.Id == id);
+
+        //        _db.Students.Add(course);
+        //        studentCourse.Courses.Add(course);
+        //    }
+
+        //    return null;
+        //}
     }
 }

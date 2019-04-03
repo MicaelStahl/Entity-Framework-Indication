@@ -28,7 +28,19 @@ namespace Entity_Framework_Indication.Controllers
             {
                 _db.CreateStudent(student);
 
-                return View(_db.AllStudents());
+                return RedirectToAction(nameof(Index), "Home");
+                //return View(_db.AllStudents());
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Details(int? id)
+        {
+            if (id != null)
+            {
+                var student = _db.FindStudent(id);
+
+                return View(student);
             }
             return View();
         }
@@ -38,9 +50,9 @@ namespace Entity_Framework_Indication.Controllers
         {
             if (id != null)
             {
-                var student = _db.FindStudent((int)id);
+                var student = _db.FindStudent(id);
 
-                return View(_db.AllStudents());
+                return View(student);
             }
             return View();
         }
@@ -49,9 +61,9 @@ namespace Entity_Framework_Indication.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.EditStudent(student);
+                var newStudent = _db.EditStudent(student);
 
-                return View(_db.AllStudents());
+                return RedirectToAction(nameof(Details), "Student", student);
             }
             return View();
         }
@@ -60,9 +72,21 @@ namespace Entity_Framework_Indication.Controllers
         {
             if (id != null)
             {
-                _db.DeleteStudent((int)id);
+                _db.DeleteStudent(id);
             }
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), "Home");
+        }
+
+        [HttpGet]
+        public IActionResult AddCourse(int? id)
+        {
+            if (id != null)
+            {
+                var student = _db.FindStudent(id);
+
+                return View(student);
+            }
+            return View();
         }
     }
 }

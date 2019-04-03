@@ -1,7 +1,21 @@
-﻿
+﻿@model Course
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Index";
 }
+<hr />
+<h3 class="offset-1">Create new Course</h3>
+<br />
+<hr />
 
-<h1>Create</h1>
-
+<form method="post" class="offset-1" asp-action="Create" asp-controller="Course">
+    <input type="text" asp-for="Title" placeholder="Title.." value="" />
+    <br />
+    <br />
+    <input type="text" asp-for="Subject" placeholder="Subject.." value="" />
+    <br />
+    <br />
+    <input type="text" asp-for="Grades" min="1" max="99" placeholder="Grades(Can be empty)" value="" />
+    <br />
+    <br />
+    <input type="submit" class="btn btn-info" value="Create" />
+</form>

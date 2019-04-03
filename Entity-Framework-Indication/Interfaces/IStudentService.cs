@@ -1,4 +1,5 @@
 ﻿using Entity_Framework_Indication.Models;
+using Entity_Framework_Indication.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,12 @@ namespace Entity_Framework_Indication.Interfaces
 
         List<Student> AllStudents();
 
-        Student FindStudent(int id);
+        Student FindStudent(int? id);
 
-        bool EditStudent(Student student);
+        Student EditStudent(Student student);
 
-        bool DeleteStudent(int id);
+        bool DeleteStudent(int? id);
+
+        //List<StudentsCourses> UpdateCourse(int? id, Course course);
     }
 }

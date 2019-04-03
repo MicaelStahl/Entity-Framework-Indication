@@ -12,16 +12,16 @@ namespace Entity_Framework_Indication.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        [MaxLength(20)]
+        [StringLength(20, ErrorMessage = "Firstname cannot be longer than 20 letters.")]
         public string FirstName { get; set; }
         [Required]
-        [MaxLength(20)]
+        [StringLength(20, ErrorMessage = "Secondname cannot be longer than 20 letters.")]
         public string SecondName { get; set; }
         [Required]
-        [MaxLength(2)]
-        public int? SchoolYear { get; set; }
+        [StringLength(6, ErrorMessage = "Schoolyear cannot be longer than 6 characters.")]
+        public string SchoolYear { get; set; }
         [Required]
-        [MaxLength(12)]
+        [StringLength(12, ErrorMessage = "Number cannot be longer than 12 characters.")]
         public string PhoneNumber { get; set; }
             
         public List<StudentsCourses> Courses { get; set; }

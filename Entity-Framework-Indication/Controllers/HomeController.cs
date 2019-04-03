@@ -10,6 +10,8 @@ namespace Entity_Framework_Indication.Controllers
 {
     public class HomeController : Controller
     {
+        StudentService studentService = new StudentService();
+
         private readonly IStudentService _studentDb;
         private readonly ITeacherService _teacherDb;
         private readonly ICourseService _courseDb;
@@ -27,7 +29,7 @@ namespace Entity_Framework_Indication.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(_studentDb.AllStudents());
         }
     }
 }

@@ -1,24 +1,31 @@
-﻿
-@{
-    ViewData["Title"] = "Index";
-}
+﻿@model List<Course>
 
-<h1>Index</h1>
+<hr />
+<h3 class="offset-1">Create new Course</h3>
+<br />
+<hr />
 
-<h3>
-    Hello, This is the Course-Index section.<br />
-    Writing all this to check if it works like I hope it should.
-</h3>
-@* Change this later on. *@
-<table>
+<table class="table-striped offset-1 container">
     <thead>
-        <tr>
-            <td>Id</td>
-            <td>Title</td>
-            <td>Subject</td>
-            <td>Id</td>
-            <td>Id</td>
-            <td>Id</td>
+        <tr class="row">
+            <th class="col-1 border">ID</th>
+            <th class="col-2 border">Title</th>
+            <th class="col-2 border">Subject</th>
+            <th class="col-2 border">Grades</th>
         </tr>
     </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                @await Html.PartialAsync("_Course", item);
+            }
+        }
+    </tbody>
 </table>
+<br />
+<br />
+<a class="offset-1" asp-action="Create" asp-controller="Course">
+    <input type="submit" class="btn btn-primary" value="Create Course" />
+</a>

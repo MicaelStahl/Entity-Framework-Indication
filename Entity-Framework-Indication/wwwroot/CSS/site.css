@@ -10,3 +10,10 @@
     height: 40px;
     width: 60px;
 }
+table {
+    color: white;
+}
+td {
+    padding: 5px;
+    text-align: left;
+}
