@@ -5,7 +5,7 @@
 
 <h1>Student Edit</h1>
 
-<form method="post" class="form-text offset-1">
+<form asp-action="Edit" asp-controller="Student" method="post" class="form-text offset-1">
     <input type="text" asp-for="FirstName" value="@Model.FirstName" />
     <label>Firstname</label>
     <br />
@@ -22,9 +22,9 @@
     <label>Phonenumber</label>
     <br />
     <br />
-    @if (Model.Courses != null)
+    @if (Model.StudentsCourses != null)
     {
-        foreach (var item in Model.Courses)
+        foreach (var item in Model.StudentsCourses)
         {
             <input type="text" value="@item.Course" disabled />
         }
@@ -34,14 +34,8 @@
         <p>@Model.FirstName @Model.SecondName doesn't have any classes.</p>
     }
     <br />
-    <a asp-action="Edit" asp-controller="Student">
-        <input type="submit" class="btn btn-warning" value="Submit" />
-    </a>
 
-    <a asp-action="Index" asp-controller="Home">
-        <input type="submit" class="btn btn-primary" value="Go back" />
-    </a>
-    <a asp-action="Remove" asp-controller="Student">
-        <input type="submit" class="btn btn-danger" value="Remove" />
-</a>
+    <input type="submit" class="btn btn-warning" value="Submit" />
+    <a class="btn btn-success" asp-action="Index" asp-controller="Home">Go back</a>
+    <a class="btn btn-danger" asp-action="Remove" asp-controller="Student">Remove</a>
 </form>

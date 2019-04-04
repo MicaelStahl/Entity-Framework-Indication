@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Entity_Framework_Indication.Models
+namespace Entity_Framework_Indication.ViewModels
 {
     public class Student
     {
@@ -24,6 +24,6 @@ namespace Entity_Framework_Indication.Models
         [StringLength(12, ErrorMessage = "Number cannot be longer than 12 characters.")]
         public string PhoneNumber { get; set; }
             
-        public List<StudentsCourses> Courses { get; set; }
+        public ICollection<StudentsCourses> StudentsCourses { get; set; }
     }
 }

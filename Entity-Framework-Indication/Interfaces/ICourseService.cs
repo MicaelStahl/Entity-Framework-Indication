@@ -1,4 +1,5 @@
 ﻿using Entity_Framework_Indication.Models;
+using Entity_Framework_Indication.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,16 @@ namespace Entity_Framework_Indication.Interfaces
 
         List<Course> AllCourses();
 
-        Course FindCourse(int id);
+        Course FindCourse(int? id);
 
-        bool RemoveCourse(int id);
+        bool RemoveCourse(int? id);
 
         bool EditCourse(Course course);
 
+        bool AddStudent(StudentsCourses student);
+
         //bool UpdateGrades(int id, string grade);
+
+        bool AddAssignment(int? id, Assignment assignment);
     }
 }

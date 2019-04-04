@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Entity_Framework_Indication.Models
+namespace Entity_Framework_Indication.ViewModels
 {
     public class Course
     {
@@ -24,6 +24,6 @@ namespace Entity_Framework_Indication.Models
 
         public List<Assignment> Assignments { get; set; }
 
-        public List<StudentsCourses> Students { get; set; }
+        public ICollection<StudentsCourses> StudentsCourses { get; set; }
     }
 }

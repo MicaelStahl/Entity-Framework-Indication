@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Entity_Framework_Indication.ViewModels.StudentsCourses>
+@*@model List<StudentsCourses>*@
+@{
+    ViewData["Title"] = "Edit";
+}
+<hr />
+<h1>Add Student to course</h1>
+<br />
+<hr />
+
+<table>
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.Course.Id)</th>
+            <th>@Html.DisplayNameFor(model => model.Course.Title)</th>
+            <th>@Html.DisplayNameFor(model => model.Course.Subject)</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    <td>
+                        <input type="checkbox" />
+                    </td>
+                    <td>@item</td>
+                    <td>@item</td>
+                }
+            }
+
+            <td>
+                <a asp-action="AddStudents" asp-controller="Course">
+                    <input type="submit" class="btn btn-primary" value="Add students" />
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>

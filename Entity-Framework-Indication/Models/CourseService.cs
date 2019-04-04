@@ -1,4 +1,6 @@
 ﻿using Entity_Framework_Indication.Interfaces;
+using Entity_Framework_Indication.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +17,35 @@ namespace Entity_Framework_Indication.Models
             _db = CourseDbContext;
         }
 
+        public bool AddAssignment(int? id, Assignment assignment)
+        {
+            if (id != null || assignment != null)
+            {
+                var course = _db.Courses.SingleOrDefault(x => x.Id == id);
+                course.Assignments.Add(assignment);
+
+                _db.SaveChanges();
+
+                return true;
+            }
+            return false;
+        }
+
+        public bool AddStudent(StudentsCourses student)
+        {
+            if (student != null)
+            {
+
+                _db.Sc.Add(student);
+                _db.SaveChanges();
+
+                return true;
+            }
+
+
+            return false;
+        }
+
         public List<Course> AllCourses()
         {
             return _db.Courses.ToList();
@@ -28,12 +59,29 @@ namespace Entity_Framework_Indication.Models
                 return null;
             }
 
-            Course newCourse = new Course() { Title = course.Title, Subject = course.Subject, Grades = course.Grades };
+            Course newCourse = new Course()
+            {
+                Title = course.Title,
+                Subject = course.Subject,
+                Grades = course.Grades,
+                StudentsCourses = course.StudentsCourses,
+                Teacher = course.Teacher,
+                Assignments = course.Assignments,
+            };
+            //StudentsCourses nC = new StudentsCourses();
 
+            //nC.Course.Title = newCourse.Title;
+            //nC.Course.Subject = newCourse.Subject;
+            //nC.Course.Grades = newCourse.Grades;
+            //nC.Course.StudentsCourses = newCourse.StudentsCourses;
+            //nC.Course.Assignments = newCourse.Assignments;
+            //nC.Course.Teacher = newCourse.Teacher;
+
+            //_db.Sc.Add(nC);
             _db.Courses.Add(newCourse);
             _db.SaveChanges();
 
-            return course;
+            return newCourse;
         }
 
         public bool EditCourse(Course course)
@@ -44,7 +92,7 @@ namespace Entity_Framework_Indication.Models
                 original.Title = course.Title;
                 original.Subject = course.Subject;
                 original.Grades = course.Grades;
-                original.Students = course.Students;
+                original.StudentsCourses = course.StudentsCourses;
                 original.Teacher = course.Teacher;
                 original.Assignments = course.Assignments;
 
@@ -55,21 +103,29 @@ namespace Entity_Framework_Indication.Models
             return false;
         }
 
-        public Course FindCourse(int id)
+        public Course FindCourse(int? id)
         {
-            return _db.Courses.SingleOrDefault(x => x.Id == id);
+            if (id != null)
+            {
+
+                return _db.Courses.SingleOrDefault(x => x.Id == id);
+            }
+            return null;
         }
 
-        public bool RemoveCourse(int id)
+        public bool RemoveCourse(int? id)
         {
-            var course = _db.Courses.SingleOrDefault(x => x.Id == id);
-
-            if (course != null)
+            if (id != null)
             {
-                _db.Courses.Remove(course);
-                _db.SaveChanges();
+                var course = _db.Courses.SingleOrDefault(x => x.Id == id);
 
-                return true;
+                if (course != null)
+                {
+                    _db.Courses.Remove(course);
+                    _db.SaveChanges();
+
+                    return true;
+                }
             }
             return false;
         }

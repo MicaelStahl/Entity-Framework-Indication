@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Entity_Framework_Indication.Interfaces;
 using Entity_Framework_Indication.Models;
+using Entity_Framework_Indication.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Entity_Framework_Indication.Controllers

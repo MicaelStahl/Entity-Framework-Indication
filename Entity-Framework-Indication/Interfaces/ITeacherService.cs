@@ -1,4 +1,4 @@
-﻿using Entity_Framework_Indication.Models;
+﻿using Entity_Framework_Indication.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

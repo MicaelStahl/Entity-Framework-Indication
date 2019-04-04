@@ -56,7 +56,7 @@ namespace Entity_Framework_Indication.Models
                 Original.SecondName = student.SecondName;
                 Original.PhoneNumber = student.PhoneNumber;
                 Original.SchoolYear = student.SchoolYear;
-                Original.Courses = student.Courses;
+                Original.StudentsCourses = student.StudentsCourses;
 
                 _db.SaveChanges();
 

@@ -6,19 +6,15 @@
     <td class="col-2 border">@Model.SecondName</td>
     <td class="col-1 border">@Model.SchoolYear</td>
     <td class="col-2 border">@Model.PhoneNumber</td>
-    @if (Model.Courses != null)
+    @if (Model.StudentsCourses != null)
     {
-        foreach (var item in Model.Courses)
+        foreach (var item in Model.StudentsCourses)
         {
             <td class="border">@item.Course</td>
         }
     }
     <td class=" border">
 
-        <a asp-action="AddCourse" asp-controller="Student" asp-route-id="@Model.Id">
-            <input type="hidden" name="Id" value="@Model.Id" />
-            <input class="btn btn-warning" type="submit" name="Id" value="Add course" />
-        </a>
         <a asp-action="Edit" asp-controller="Student" asp-route-id="@Model.Id">
             <input type="hidden" name="Id" value="@Model.Id" />
             <input class="btn btn-warning" type="submit" name="Id" value="Edit" />

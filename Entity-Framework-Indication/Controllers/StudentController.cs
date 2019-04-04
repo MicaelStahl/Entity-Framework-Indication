@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Entity_Framework_Indication.Interfaces;
 using Entity_Framework_Indication.Models;
+using Entity_Framework_Indication.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Entity_Framework_Indication.Controllers
@@ -11,10 +12,12 @@ namespace Entity_Framework_Indication.Controllers
     public class StudentController : Controller
     {
         private readonly IStudentService _db;
+        private readonly SchoolDbContext _dbContext;
 
-        public StudentController(IStudentService studentService)
+        public StudentController(IStudentService studentService, SchoolDbContext dbContext)
         {
             _db = studentService;
+            _dbContext = dbContext;
         }
 
         public IActionResult Index()
@@ -75,18 +78,6 @@ namespace Entity_Framework_Indication.Controllers
                 _db.DeleteStudent(id);
             }
             return RedirectToAction(nameof(Index), "Home");
-        }
-
-        [HttpGet]
-        public IActionResult AddCourse(int? id)
-        {
-            if (id != null)
-            {
-                var student = _db.FindStudent(id);
-
-                return View(student);
-            }
-            return View();
         }
     }
 }

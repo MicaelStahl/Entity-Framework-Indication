@@ -19,9 +19,9 @@
         <td>@Model.PhoneNumber</td>
     </tr>
     <tr>
-        @if (Model.Courses != null)
+        @if (Model.StudentsCourses != null)
         {
-            foreach (var item in Model.Courses)
+            foreach (var item in Model.StudentsCourses)
             {
                 <td>@item.Course</td>
             }
