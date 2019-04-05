@@ -19,7 +19,7 @@ namespace Entity_Framework_Indication.Interfaces
 
         bool EditCourse(Course course);
 
-        bool AddStudent(StudentsCourses student);
+        bool AddStudent(int? courseId, int? studentId);
 
         //bool UpdateGrades(int id, string grade);
 

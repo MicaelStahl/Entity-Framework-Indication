@@ -25,7 +25,13 @@ namespace Entity_Framework_Indication.Models
 
         public Student CreateStudent(Student student)
         {
-            Student newStudent = new Student() { FirstName = student.FirstName, SecondName = student.SecondName, SchoolYear = student.SchoolYear, PhoneNumber = student.PhoneNumber };
+            Student newStudent = new Student()
+            {
+                FirstName = student.FirstName,
+                SecondName = student.SecondName,
+                SchoolYear = student.SchoolYear,
+                PhoneNumber = student.PhoneNumber
+            };
 
             _db.Students.Add(newStudent);
             _db.SaveChanges();

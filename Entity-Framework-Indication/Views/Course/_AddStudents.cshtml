@@ -1,0 +1,52 @@
+﻿@model SchoolDbContext
+
+@*@
+    <tr>
+        <td>@item.FirstName</td>
+        <td>@item.SecondName</td>
+        <td>@item.SchoolYear</td>
+        <td>@item.PhoneNumber</td>
+        @if (item.StudentsCourses != null)
+        {
+            foreach (var value in item.StudentsCourses)
+            {
+                <td>@value.Course</td>
+            }
+
+        }
+    </tr>
+}*@
+
+@foreach (var item in Model.Courses)
+{
+    <tr>
+        <td><input type="checkbox" id="@item.Id" /></td>
+        <td>@item.Title</td>
+        <td>@item.Subject</td>
+        <td>@item.Teacher</td>
+        @if (item.Assignments != null)
+        {
+            <td>Assignments</td>
+            foreach (var value in item.Assignments)
+            {
+                <td>@value.Title</td>
+                <td>@value.Subject</td>
+                <td>@value.Description</td>
+                <td>@value.DueToDate</td>
+            }
+        }
+        @if (item.StudentsCourses != null)
+        {
+            <td>Students part of the course</td>
+            foreach (var value in item.StudentsCourses)
+            {
+
+                <td>@value.Student.FirstName</td>
+                <td>@value.Student.SecondName</td>
+                <td>@value.Student.SchoolYear</td>
+                <td>@value.Student.PhoneNumber</td>
+                <td>@item.Grades</td>
+            }
+        }
+    </tr>
+}

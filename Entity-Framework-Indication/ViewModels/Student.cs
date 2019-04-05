@@ -24,6 +24,6 @@ namespace Entity_Framework_Indication.ViewModels
         [StringLength(12, ErrorMessage = "Number cannot be longer than 12 characters.")]
         public string PhoneNumber { get; set; }
             
-        public ICollection<StudentsCourses> StudentsCourses { get; set; }
+        public List<StudentsCourses> StudentsCourses { get; set; }
     }
 }

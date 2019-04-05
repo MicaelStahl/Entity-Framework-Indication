@@ -1,88 +1,71 @@
-﻿@model StudentsCourses
-
+﻿@model SchoolDbContext
 @{
     ViewData["Title"] = "Edit";
 }
-
 <hr />
 <h1>Add Student to course</h1>
 <br />
 <hr />
 
-<form method="post" class="form-text offset-1 col-5">
-    <label>Title:</label>
-    <br />
-    <input type="text" asp-for="Course.Title" value="@Model.Course.Title" disabled />
-    <br />
-    <br />
-    <label>Subject:</label>
-    <br />
-    <input type="text" asp-for="Course.Subject" value="@Model.Course.Subject" disabled />
-    <br />
-    <br />
-    @if (Model.Course.Teacher != null)
-    {
-        <label>Teacher:</label>
-        <br />
-        <input type="text" asp-for="Course.Teacher" value="@Model.Course.Teacher" disabled />
-        <br />
-        <br />
-    }
-    else
-    {
-        <p>@Model.Course.Title Doesn't have a teacher. </p>
-    }
-    @if (Model.Course.StudentsCourses != null)
-    {
-        foreach (var item in Model.Course.StudentsCourses)
-        {
-            <input type="text" value="@item.Student" disabled />
-        }
-    }
-    else
-    {
-        <p>@Model.Course.Title doesn't have any Students.</p>
-    }
-    <br />
-    <a asp-action="Edit" asp-controller="Course">
-        <input type="submit" class="btn btn-warning" value="Submit" />
-    </a>
-
-    <a asp-action="Index" asp-controller="Home">
-        <input type="submit" class="btn btn-primary" value="Go back" />
-    </a>
-    <a asp-action="Remove" asp-controller="Course">
-        <input type="submit" class="btn btn-danger" value="Remove" />
-    </a>
-</form>
-<br />
-@if (Model.Course.StudentsCourses != null)
-{
-    <table class="col-4">
-        <thead>
-            <tr>
-                <th>Add course</th>
-                <th>CourseId</th>
-                <th>Course</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Course.StudentsCourses)
+<table>
+    <thead>
+        @*@if (Model.Courses != null)
             {
-                @await Html.PartialAsync("_AddStudents", item)
-            }
+                foreach (var value in Model.Courses)
+                {
             <tr>
-                <td>
-                    <a class="offset-1" asp-action="AddStudents">
-                        <input type="submit" class="btn btn-success" value="Add students" />
-                    </a>
-                </td>
-                <td>
-                    <a class="offset-1" asp-action="Create" asp-controller="Student">
-                        <input formmethod="get" class="btn btn-warning" type="submit" name="Id" value="Create Student" />
-                    </a>
-                </td>
+                <th>Chosen course</th>
+                <td>@value.Title</td>
+                <td>@value.Subject</td>
+                @if (value.Teacher != null)
+                {
+                    <td>@value.Teacher</td>
+                }
+                @if (value.Assignments != null)
+                {
+                    foreach (var item in value.Assignments)
+                    {
+                        <td>@item.Title</td>
+                        <td>@item.Subject</td>
+                        <td>@item.Description</td>
+                        <td>@item.DueToDate</td>
+                    }
+                }
+                @if (Model.Students != null)
+                {
+                    foreach (var item in Model.Students)
+                    {
+                        <td>@item.FirstName</td>
+                        <td>@item.SecondName</td>
+                        <td>@item.SchoolYear</td>
+                        <td>@item.PhoneNumber</td>
+                    }
+
+                }
             </tr>
-        </tbody>
-    </table>
-}
+                }
+            }*@
+        @*@foreach (var item in Model.Students)
+            {
+            <partial name="_AddStudents" model="item" />
+            }*@
+
+
+    </thead>
+    <tbody>
+        <tr>
+            @if (Model.Students != null)
+            {
+                foreach (var item in Model.Students)
+                {
+                    <td>
+                        <partial name="_AddStudentsStudentTest" model="item" />
+                    </td>
+                }
+            }
+            <td>
+                <a class="btn btn-success" asp-action="Index" asp-controller="Course">Return</a>
+            </td>
+        </tr>
+    </tbody>
+</table>

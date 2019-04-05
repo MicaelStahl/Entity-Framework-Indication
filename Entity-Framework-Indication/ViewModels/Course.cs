@@ -24,6 +24,6 @@ namespace Entity_Framework_Indication.ViewModels
 
         public List<Assignment> Assignments { get; set; }
 
-        public ICollection<StudentsCourses> StudentsCourses { get; set; }
+        public List<StudentsCourses> StudentsCourses { get; set; }
     }
 }

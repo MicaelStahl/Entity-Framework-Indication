@@ -1,0 +1,31 @@
+﻿@model Student
+
+<form class="form" style="float: right;" asp-action="AddStudents" asp-controller="Course" asp-route-id="@Model.Id">
+
+    @*<input type="checkbox" id="@Model.Id" />*@
+    @*<br />
+        <label>@Model.FirstName </label>
+        <label>@Model.SecondName </label>
+        <label>@Model.SchoolYear </label>
+        <label>@Model.PhoneNumber </label>
+        <br />*@
+    <br />
+    <input value="@Model.FirstName" asp-for="FirstName" disabled />
+    <input value="@Model.SecondName" asp-for="SecondName" disabled />
+    <input value="@Model.SchoolYear" asp-for="SchoolYear" disabled />
+    <input value="@Model.PhoneNumber" asp-for="PhoneNumber" disabled />
+    @if (Model.StudentsCourses != null)
+    {
+        foreach (var item in Model.StudentsCourses)
+        {
+            <input value="@item.Course.Title" disabled />
+            <input value="@item.Course.Subject" disabled />
+            <input value="@item.Course.Teacher" disabled />
+            <input value="@item.Course.Grades" disabled />
+        }
+    }
+    <br />
+    <br />
+
+    <button class="btn btn-primary">Add student to course</button>
+</form>

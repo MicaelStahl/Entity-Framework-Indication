@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Entity_Framework_Indication.Interfaces;
 using Entity_Framework_Indication.Models;
 using Entity_Framework_Indication.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,8 @@ namespace Entity_Framework_Indication.Controllers
         private readonly ICourseService _courseDB;
         private readonly IAssignmentService _assignmentDB;
         private readonly SchoolDbContext _dbContext;
+
+        private const string SessionKeyTesting = "_Testing";
 
         public CourseController(ICourseService courseService, IAssignmentService assignmentService,
             SchoolDbContext dbContext)
@@ -28,6 +31,7 @@ namespace Entity_Framework_Indication.Controllers
         // the blueprint atm. It's bound to change.
         public IActionResult Index()
         {
+            HttpContext.Session.Remove("_Testing");
             return View(_courseDB.AllCourses());
         }
 
@@ -63,28 +67,23 @@ namespace Entity_Framework_Indication.Controllers
         {
             if (id != null)
             {
-                StudentsCourses Sc = new StudentsCourses();
-                Student student = new Student();
-                Sc.Course = _courseDB.FindCourse(id);
+                HttpContext.Session.SetInt32("_Testing", (int)id);
 
-
-                //Sc.Course.Students = _dbContext.Sc.Include(x => x.Student).ToList();
-                //Sc.Course.Students = _dbContext.Students.Include(x => x.Courses).ToList();
-                var newStudents = _dbContext.Students.Include(x => x.StudentsCourses).ToList();
-                return View(Sc);
+                var course = _courseDB.FindCourse(id);
+                //var newStudents = _dbContext.Students.Include(x => x.StudentsCourses).ToList();
+                return View(_dbContext);
             }
-            return View();
+            return BadRequest();
         }
-        [HttpPost]
-        public IActionResult AddStudents(StudentsCourses students)
+        [HttpPost, ActionName("AddStudents")]
+        public IActionResult AddStudentsComplete(int? id)
         {
-            if (ModelState.IsValid)
+            if (id != null || id == 0)
             {
-                //var courses = _dbContext.Courses.Include(x => x.Students);
+                var course = HttpContext.Session.GetInt32("_Testing");
+                _courseDB.AddStudent(course, id);
 
-                _courseDB.AddStudent(students);
-
-                return RedirectToAction(nameof(Details));
+                return View(_dbContext);
             }
 
             return View();

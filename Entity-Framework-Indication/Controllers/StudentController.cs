@@ -12,12 +12,10 @@ namespace Entity_Framework_Indication.Controllers
     public class StudentController : Controller
     {
         private readonly IStudentService _db;
-        private readonly SchoolDbContext _dbContext;
 
-        public StudentController(IStudentService studentService, SchoolDbContext dbContext)
+        public StudentController(IStudentService studentService)
         {
             _db = studentService;
-            _dbContext = dbContext;
         }
 
         public IActionResult Index()

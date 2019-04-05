@@ -31,18 +31,26 @@ namespace Entity_Framework_Indication.Models
             return false;
         }
 
-        public bool AddStudent(StudentsCourses student)
+        public bool AddStudent(int? courseId, int? studentId)
         {
-            if (student != null)
+            if (courseId != null || studentId != null)
             {
+                if (courseId == 0 || studentId == 0)
+                {
+                    return false;
+                }
+                var course = _db.Courses.SingleOrDefault(x => x.Id == courseId);
+                var student = _db.Students.SingleOrDefault(x => x.Id == studentId);
 
-                _db.Sc.Add(student);
+                _db.Sc.Include(x => x.StudentId == student.Id)
+                    .Include(x => x.Student == student)
+                    .Include(x => x.CourseId == course.Id)
+                    .Include(x => x.Course == course);
+
                 _db.SaveChanges();
 
                 return true;
             }
-
-
             return false;
         }
 
@@ -68,16 +76,7 @@ namespace Entity_Framework_Indication.Models
                 Teacher = course.Teacher,
                 Assignments = course.Assignments,
             };
-            //StudentsCourses nC = new StudentsCourses();
 
-            //nC.Course.Title = newCourse.Title;
-            //nC.Course.Subject = newCourse.Subject;
-            //nC.Course.Grades = newCourse.Grades;
-            //nC.Course.StudentsCourses = newCourse.StudentsCourses;
-            //nC.Course.Assignments = newCourse.Assignments;
-            //nC.Course.Teacher = newCourse.Teacher;
-
-            //_db.Sc.Add(nC);
             _db.Courses.Add(newCourse);
             _db.SaveChanges();
 
@@ -107,7 +106,6 @@ namespace Entity_Framework_Indication.Models
         {
             if (id != null)
             {
-
                 return _db.Courses.SingleOrDefault(x => x.Id == id);
             }
             return null;
