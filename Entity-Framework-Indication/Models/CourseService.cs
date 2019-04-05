@@ -42,9 +42,13 @@ namespace Entity_Framework_Indication.Models
                 var course = _db.Courses.SingleOrDefault(x => x.Id == courseId);
                 var student = _db.Students.SingleOrDefault(x => x.Id == studentId);
 
-                _db.Sc.Include(x => x.StudentId == student.Id)
-                    .Include(x => x.Student == student)
-                    .Include(x => x.CourseId == course.Id)
+                StudentsCourses sc = new StudentsCourses();
+                sc.Course = course;
+                sc.Student = student;
+
+                _db.Sc.Add(sc);
+
+                _db.Sc.Include(x => x.Student == student)
                     .Include(x => x.Course == course);
 
                 _db.SaveChanges();
