@@ -9,6 +9,11 @@
 
 <table>
     <thead>
+
+         @foreach (var item in Model.Sc)
+         {
+             <partial name="_StudentsCoursesTesting" model="item" />
+         }
         @*@if (Model.Courses != null)
             {
                 foreach (var value in Model.Courses)

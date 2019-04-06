@@ -23,7 +23,10 @@
         {
             foreach (var item in Model.StudentsCourses)
             {
-                <td>@item.Course</td>
+                <td>@item.Course.Title</td>
+                <td>@item.Course.Subject</td>
+                <td>@item.Course.Teacher</td>
+                <td>@item.Course.Grades</td>
             }
         }
         else
