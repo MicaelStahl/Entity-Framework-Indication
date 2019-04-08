@@ -9,11 +9,16 @@
 
 <table>
     <thead>
-
-         @foreach (var item in Model.Sc)
-         {
-             <partial name="_StudentsCoursesTesting" model="item" />
-         }
+        @foreach (var item in Model.Sc)
+        {
+            foreach (var value in Model.Students)
+            {
+                if (item.StudentId != value.Id)
+                {
+                    <partial name="_StudentsCoursesTesting" model="value.StudentsCourses" />
+                }
+            }
+        }
         @*@if (Model.Courses != null)
             {
                 foreach (var value in Model.Courses)
@@ -52,22 +57,22 @@
             }*@
         @*@foreach (var item in Model.Students)
             {
-            <partial name="_AddStudents" model="item" />
+                <partial name="_AddStudents" model="Model" />
             }*@
 
 
     </thead>
     <tbody>
         <tr>
-            @if (Model.Students != null)
-            {
-                foreach (var item in Model.Students)
+            @*@if (Model.Students != null)
                 {
-                    <td>
-                        <partial name="_AddStudentsStudentTest" model="item" />
-                    </td>
-                }
-            }
+                    foreach (var item in Model.Students)
+                    {
+                        <td>
+                            <partial name="_AddStudentsStudentTest" model="item" />
+                        </td>
+                    }
+                }*@
         </tr>
         <tr>
             <td>

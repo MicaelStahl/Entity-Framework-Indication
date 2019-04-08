@@ -27,7 +27,23 @@
         {
             foreach (var item in Model.StudentsCourses)
             {
-                <td>@item.Student</td>
+                <td>@item.Student.FirstName</td>
+                <td>@item.Student.SecondName</td>
+                <td>@item.Student.SchoolYear</td>
+                <td>@item.Student.PhoneNumber</td>
+                @*<td>@item.Course.Grades</td>*@
+                @if (Model.Assignments != null)
+                {
+                    <td>Assignments:</td>
+                    foreach (var value in Model.Assignments)
+                    {
+                        <td>@value.Title</td>
+                        <td>@value.Course</td>
+                        <td>@value.Subject</td>
+                        <td>@value.Description</td>
+                        <td>@value.DueToDate</td>
+                    }
+                }
             }
         }
         else

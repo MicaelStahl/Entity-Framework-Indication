@@ -1,5 +1,6 @@
 ﻿@model Student
 
+
 <form class="form" style="float: right;" asp-action="AddStudents" asp-controller="Course" asp-route-id="@Model.Id">
 
     @*<input type="checkbox" id="@Model.Id" />*@
@@ -10,18 +11,32 @@
         <label>@Model.PhoneNumber </label>
         <br />*@
     <br />
-    <input value="@Model.FirstName" asp-for="FirstName" disabled />
-    <input value="@Model.SecondName" asp-for="SecondName" disabled />
-    <input value="@Model.SchoolYear" asp-for="SchoolYear" disabled />
-    <input value="@Model.PhoneNumber" asp-for="PhoneNumber" disabled />
+
+    <label asp-for="FirstName">@Model.FirstName</label>
+    <br />
+    <label asp-for="SecondName">@Model.SecondName</label>
+    <br />
+    <label asp-for="SchoolYear">@Model.SchoolYear</label>
+    <br />
+    <label asp-for="PhoneNumber">@Model.PhoneNumber</label>
+    <br />
+    @*<input value="@Model.FirstName" asp-for="FirstName" disabled />
+        <input value="@Model.SecondName" asp-for="SecondName" disabled />
+        <input value="@Model.SchoolYear" asp-for="SchoolYear" disabled />
+        <input value="@Model.PhoneNumber" asp-for="PhoneNumber" disabled />*@
     @if (Model.StudentsCourses != null)
     {
         foreach (var item in Model.StudentsCourses)
         {
-            <input value="@item.Course.Title" disabled />
-            <input value="@item.Course.Subject" disabled />
-            <input value="@item.Course.Teacher" disabled />
-            <input value="@item.Course.Grades" disabled />
+            <label>@item.Course.Title</label>
+            <label>@item.Course.Subject</label>
+            <label>@item.Course.Teacher</label>
+            @*<label>@item.Course.Grades</label>*@
+
+            @*<input value="@item.Course.Title" disabled />
+                <input value="@item.Course.Subject" disabled />
+                <input value="@item.Course.Teacher" disabled />
+                <input value="@item.Course.Grades" disabled />*@
         }
     }
     <br />

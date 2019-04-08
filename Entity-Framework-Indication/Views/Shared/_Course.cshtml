@@ -2,15 +2,18 @@
 
 <tr class="row">
     <td class="col-1 border">@Model.Id</td>
-    <td class="col-2 border">@Model.Title</td>
+    <td class="col-3 border">@Model.Title</td>
     <td class="col-2 border">@Model.Subject</td>
-    <td class="col-2 border">@Model.Grades</td>
+    @*<td class="col-2 border">@Model.Grades</td>*@
     @if (Model.StudentsCourses != null)
     {
         foreach (var item in Model.StudentsCourses)
         {
-            <td class="col-2 border">@item.StudentId</td>
-            <td class="col-2 border">@item.Student</td>
+            if (item.Student != null)
+            {
+            <td class="col-2 border">@item.Student.FirstName</td>
+            <td class="col-2 border">@item.Student.SecondName</td>
+            }
         }
     }
     @if (Model.Assignments != null)
@@ -20,7 +23,7 @@
             <td class="col-2 border">@item</td>
         }
     }
-    <td class=" border">
+    <td class=" border col-4">
 
         <a asp-action="AddStudents" asp-controller="Course" asp-route-id="@Model.Id">
             <input type="hidden" name="Id" value="@Model.Id" />

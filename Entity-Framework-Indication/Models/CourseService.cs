@@ -31,6 +31,18 @@ namespace Entity_Framework_Indication.Models
             return false;
         }
 
+        public bool FindCourseWithStudents(int? id)
+        {
+            if (id == 0 || id == null)
+            {
+                return false;
+            }
+
+            //Do a Include here for the _db.Sc to add students/Courses :)
+
+            return false;
+        }
+
         public bool AddStudent(int? courseId, int? studentId)
         {
             if (courseId != null || studentId != null)
@@ -39,19 +51,29 @@ namespace Entity_Framework_Indication.Models
                 {
                     return false;
                 }
+
                 var course = _db.Courses.SingleOrDefault(x => x.Id == courseId);
                 var student = _db.Students.SingleOrDefault(x => x.Id == studentId);
 
-                StudentsCourses sc = new StudentsCourses();
-                sc.Course = course;
-                sc.Student = student;
+                StudentsCourses sc = new StudentsCourses
+                {
+                    CourseId = course.Id,
+                    Course = course,
+                    StudentId = student.Id,
+                    Student = student
+                };
 
                 _db.Sc.Add(sc);
+                course.StudentsCourses.Add(sc);
 
-                _db.Sc.Include(x => x.Student == student)
-                    .Include(x => x.Course == course);
+                //_db.Sc.Include(x => x.Student == student)
+                //        .Include(x => x.Course == course);
 
                 _db.SaveChanges();
+                //var newTemp = _db.Sc.Include("Course").ToList();
+
+                //var temp = _db.Sc.Include(x => x.Student == student)
+                //          .Include(y => y.Course == course).ToList();
 
                 return true;
             }
@@ -60,7 +82,7 @@ namespace Entity_Framework_Indication.Models
 
         public List<Course> AllCourses()
         {
-            return _db.Courses.ToList();
+            return _db.Courses.Include(x => x.StudentsCourses).ToList();
         }
 
         public Course CreateCourse(Course course)
@@ -75,7 +97,7 @@ namespace Entity_Framework_Indication.Models
             {
                 Title = course.Title,
                 Subject = course.Subject,
-                Grades = course.Grades,
+                //Grades = course.Grades,
                 StudentsCourses = course.StudentsCourses,
                 Teacher = course.Teacher,
                 Assignments = course.Assignments,
@@ -94,7 +116,7 @@ namespace Entity_Framework_Indication.Models
             {
                 original.Title = course.Title;
                 original.Subject = course.Subject;
-                original.Grades = course.Grades;
+                //original.Grades = course.Grades;
                 original.StudentsCourses = course.StudentsCourses;
                 original.Teacher = course.Teacher;
                 original.Assignments = course.Assignments;

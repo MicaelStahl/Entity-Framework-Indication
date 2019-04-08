@@ -31,7 +31,7 @@ namespace Entity_Framework_Indication.Models
                 return null;
             }
             Assignment assignment = new Assignment()
-            { Title = title, Description = description, Subject = subject, DueToDate = dueToDate, Grades = grades };
+            { Title = title, Description = description, Subject = subject, DueToDate = dueToDate, /*Grades = grades*/ };
 
             _db.Assignments.Add(assignment);
             _db.SaveChanges();
@@ -49,7 +49,7 @@ namespace Entity_Framework_Indication.Models
                 orig.Description = assignment.Description;
                 orig.Subject = assignment.Subject;
                 orig.DueToDate = assignment.DueToDate;
-                orig.Grades = assignment.Grades;
+                //orig.Grades = assignment.Grades;
 
                 _db.SaveChanges();
 
@@ -82,7 +82,7 @@ namespace Entity_Framework_Indication.Models
 
             if (newGrades != null)
             {
-                newGrades.Grades = grades;
+                //newGrades.Grades = grades;
                 _db.SaveChanges();
 
                 return true;

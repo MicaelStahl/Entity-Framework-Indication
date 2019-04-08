@@ -17,6 +17,8 @@ namespace Entity_Framework_Indication.Interfaces
 
         bool RemoveCourse(int? id);
 
+        bool FindCourseWithStudents(int? id);
+
         bool EditCourse(Course course);
 
         bool AddStudent(int? courseId, int? studentId);

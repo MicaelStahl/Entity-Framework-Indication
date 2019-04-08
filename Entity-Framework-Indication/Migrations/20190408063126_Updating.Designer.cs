@@ -4,14 +4,16 @@ using Entity_Framework_Indication.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Entity_Framework_Indication.Migrations
 {
     [DbContext(typeof(SchoolDbContext))]
-    partial class SchoolDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190408063126_Updating")]
+    partial class Updating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,6 +33,9 @@ namespace Entity_Framework_Indication.Migrations
                         .HasMaxLength(250);
 
                     b.Property<DateTime>("DueToDate");
+
+                    b.Property<string>("Grades")
+                        .HasMaxLength(3);
 
                     b.Property<string>("Subject")
                         .IsRequired()
@@ -52,6 +57,9 @@ namespace Entity_Framework_Indication.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Grades")
+                        .HasMaxLength(3);
 
                     b.Property<string>("Subject")
                         .IsRequired()

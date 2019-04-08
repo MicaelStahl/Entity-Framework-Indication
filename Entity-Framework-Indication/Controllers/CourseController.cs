@@ -68,9 +68,11 @@ namespace Entity_Framework_Indication.Controllers
             if (id != null)
             {
                 HttpContext.Session.SetInt32("_Testing", (int)id);
-
+                //var student = _dbContext.Sc.Include(x => x.StudentId).ToList();
                 var course = _courseDB.FindCourse(id);
                 //var newStudents = _dbContext.Students.Include(x => x.StudentsCourses).ToList();
+
+                //_dbContext.Sc.Include(x => x.Course == course).Include(y => y.Student);
                 return View(_dbContext);
             }
             return BadRequest();
@@ -81,8 +83,10 @@ namespace Entity_Framework_Indication.Controllers
             if (id != null || id == 0)
             {
                 var course = HttpContext.Session.GetInt32("_Testing");
+
                 _courseDB.AddStudent(course, id);
 
+                //return View(_courseDB.AddStudent(course, id));
                 return View(_dbContext);
             }
 

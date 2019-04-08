@@ -1,11 +1,20 @@
-﻿@model StudentsCourses
+﻿@model SchoolDbContext
+@*StudentsCourses*@
 
 
 <tr>
-    <td>@Model.Course.Title</td>
-    <td>@Model.Course.Subject</td>
-    <td>@Model.Course.Teacher</td>
-    <td>@Model.Student.FirstName</td>
-    <td>@Model.Student.SecondName</td>
-    <td>@Model.Course.Grades</td>
+    @foreach (var item in Model.Sc)
+    {
+
+    @*<td></td>
+        <td>@Html.DisplayNameFor(model => model.Course.Id)</td>
+        <td>@Html.DisplayNameFor(model => model.Course.Id)</td>
+        <td>@Html.DisplayNameFor(model => model.Course.Id)</td>
+        <td>@Html.DisplayNameFor(model => model.Course.Id)</td>*@
+    @*<td>@Model.Course.Title</td>
+        <td>@Model.Course.Subject</td>
+        <td>@Model.Course.Teacher</td>
+        <td>@Model.Student.FirstName</td>
+        <td>@Model.Student.SecondName</td>*@
+    }
 </tr>
