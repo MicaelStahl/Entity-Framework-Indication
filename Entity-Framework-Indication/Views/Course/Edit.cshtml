@@ -1,7 +1,28 @@
-﻿
+﻿@model Course
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<br />
+<h1 class="offset-6">Edit</h1>
+<hr />
+<br />
 
+<form class="offset-4" asp-action="Edit" asp-controller="Course" asp-route-id="@Model.Id" method="post">
+    <table class="table-active col-4 border">
+        <tr class="row border" style="margin: 0;">
+            <td><input asp-for="Title" value="@Model.Title" /></td>
+        </tr>
+        <tr class="row border" style="margin: 0;">
+            <td><input asp-for="Subject" value="@Model.Subject" /></td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" class="btn btn-success" value="Submit" />
+                <a class="btn btn-primary" asp-action="Index" asp-controller="Course">Return</a>
+                <a class="btn btn-danger" asp-action="Remove" asp-controller="Course">Remove Course</a>
+            </td>
+        </tr>
+
+    </table>
+</form>

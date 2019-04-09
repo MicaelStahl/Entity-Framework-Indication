@@ -64,7 +64,7 @@ namespace Entity_Framework_Indication.Controllers
             {
                 var newStudent = _db.EditStudent(student);
 
-                return RedirectToAction(nameof(Details), "Student", student);
+                return RedirectToAction(nameof(Details), "Student", newStudent);
             }
             return View();
         }

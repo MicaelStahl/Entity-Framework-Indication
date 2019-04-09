@@ -1,20 +1,26 @@
-﻿@model SchoolDbContext
-@*StudentsCourses*@
+﻿@model StudentsCourses
 
-
-<tr>
-    @foreach (var item in Model.Sc)
-    {
-
-    @*<td></td>
-        <td>@Html.DisplayNameFor(model => model.Course.Id)</td>
-        <td>@Html.DisplayNameFor(model => model.Course.Id)</td>
-        <td>@Html.DisplayNameFor(model => model.Course.Id)</td>
-        <td>@Html.DisplayNameFor(model => model.Course.Id)</td>*@
-    @*<td>@Model.Course.Title</td>
-        <td>@Model.Course.Subject</td>
-        <td>@Model.Course.Teacher</td>
-        <td>@Model.Student.FirstName</td>
-        <td>@Model.Student.SecondName</td>*@
-    }
-</tr>
+    <table>
+        <tr class="row border col-12" style="margin: 0;">
+            <td class="col-1">@Model.Student.FirstName</td>
+            <td class="col-1">@Model.Student.SecondName</td>
+            <td class="col-1">@Model.Student.SchoolYear</td>
+            <td class="col-1">@Model.Student.PhoneNumber</td>
+            <td><br /></td> 
+            @if (Model.Student.StudentsCourses != null)
+            {
+                <td><h4>Already part of these courses</h4></td>
+                <td><br /></td>
+                foreach (var item in Model.Student.StudentsCourses)
+                {
+                    <td>@item.Course.Title</td>
+                }
+            }
+            <td>
+            <a class="btn btn-success" asp-action="AddStudents" asp-controller="Course" asp-route-id="@Model.StudentId" >Add Student</a>
+            </td>
+            <td>
+                <a class="btn btn-primary" asp-action="Index" asp-controller="Course">Return</a>
+            </td>
+        </tr>
+    </table>

@@ -27,8 +27,7 @@ namespace Entity_Framework_Indication.Controllers
             _dbContext = dbContext;
         }
 
-        // Remember to add PartialViews etc to make everything actually function. This is just 
-        // the blueprint atm. It's bound to change.
+        [AutoValidateAntiforgeryToken]
         public IActionResult Index()
         {
             HttpContext.Session.Remove("_Testing");
@@ -36,6 +35,7 @@ namespace Entity_Framework_Indication.Controllers
         }
 
         [HttpGet]
+        [AutoValidateAntiforgeryToken]
         public IActionResult AddAssignment(int? id)
         {
             if (id != null)
@@ -50,6 +50,7 @@ namespace Entity_Framework_Indication.Controllers
             return View();
         }
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public IActionResult AddAssignment(int? id, Assignment assignment)
         {
             if (id != null || ModelState.IsValid)
@@ -63,21 +64,25 @@ namespace Entity_Framework_Indication.Controllers
         }
 
         [HttpGet]
+        [AutoValidateAntiforgeryToken]
         public IActionResult AddStudents(int? id)
         {
             if (id != null)
             {
                 HttpContext.Session.SetInt32("_Testing", (int)id);
-                //var student = _dbContext.Sc.Include(x => x.StudentId).ToList();
-                var course = _courseDB.FindCourse(id);
-                //var newStudents = _dbContext.Students.Include(x => x.StudentsCourses).ToList();
 
-                //_dbContext.Sc.Include(x => x.Course == course).Include(y => y.Student);
-                return View(_dbContext);
+                var studentCourses = _courseDB.FindNonAssignedStudents(id);
+
+                if (studentCourses == null)
+                {
+                    return BadRequest();
+                }
+                return View(studentCourses);
             }
-            return BadRequest();
+            return NotFound();
         }
         [HttpPost, ActionName("AddStudents")]
+        [AutoValidateAntiforgeryToken]
         public IActionResult AddStudentsComplete(int? id)
         {
             if (id != null || id == 0)
@@ -86,7 +91,6 @@ namespace Entity_Framework_Indication.Controllers
 
                 _courseDB.AddStudent(course, id);
 
-                //return View(_courseDB.AddStudent(course, id));
                 return View(_dbContext);
             }
 
@@ -94,11 +98,13 @@ namespace Entity_Framework_Indication.Controllers
         }
 
         [HttpGet]
+        [AutoValidateAntiforgeryToken]
         public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
+        [AutoValidateAntiforgeryToken]
         public IActionResult Create(Course course)
         {
             if (ModelState.IsValid)
@@ -110,11 +116,12 @@ namespace Entity_Framework_Indication.Controllers
             return View();
         }
 
+        [AutoValidateAntiforgeryToken]
         public IActionResult Details(int? id)
         {
             if (id != null)
             {
-                var course = _courseDB.FindCourse(id);
+                var course = _courseDB.FindCourseWithStudents(id);
 
                 return View(course);
             }
@@ -122,6 +129,7 @@ namespace Entity_Framework_Indication.Controllers
         }
 
         [HttpGet]
+        [AutoValidateAntiforgeryToken]
         public IActionResult Edit(int? id)
         {
             if (id != null)
@@ -133,17 +141,19 @@ namespace Entity_Framework_Indication.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Edit(Course course)
+        [AutoValidateAntiforgeryToken]
+        public IActionResult Edit([Bind("Id, Title, Subject")]Course course)
         {
             if (ModelState.IsValid)
             {
                 var newCourse = _courseDB.EditCourse(course);
 
-                return View(newCourse);
+                return RedirectToAction(nameof(Details), "Course", newCourse);
             }
-            return View();
+            return NotFound();
         }
 
+        [AutoValidateAntiforgeryToken]
         public IActionResult Remove(int? id)
         {
             if (id != null)
@@ -154,14 +164,5 @@ namespace Entity_Framework_Indication.Controllers
             }
             return View();
         }
-
-        //public IActionResult UpdateGrades(int id, string grades)
-        //{
-        //    if (grades != null)
-        //    {
-        //        _courseDB.UpdateGrades(id, grades);
-        //    }
-        //    return View();
-        //}
     }
 }

@@ -18,11 +18,6 @@ namespace Entity_Framework_Indication.ViewModels
         [StringLength(50, ErrorMessage = "Subject cannot be longer than 50 characters.")]
         public string Subject { get; set; }
 
-        //Remove this one later. This is not required for the assignment anymore.
-        //Can still do it if I were to feel like it however.
-        //[StringLength(3, ErrorMessage = "Grades cannot be longer than 3 characters.")]
-        //public string Grades { get; set; }
-
         public Teacher Teacher { get; set; }
 
         public List<Assignment> Assignments { get; set; }

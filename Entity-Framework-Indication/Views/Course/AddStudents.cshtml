@@ -1,4 +1,4 @@
-﻿@model SchoolDbContext
+﻿@model List<StudentsCourses>
 @{
     ViewData["Title"] = "Edit";
 }
@@ -7,54 +7,25 @@
 <br />
 <hr />
 
-<table>
+<table class="table-active col-3 border">
     <thead>
-        @foreach (var item in Model.Sc)
+        @if (Model != null)
         {
-            foreach (var value in Model.Students)
+            foreach (var item in Model)
             {
-                if (item.StudentId != value.Id)
-                {
-                    <partial name="_StudentsCoursesTesting" model="value.StudentsCourses" />
-                }
+                <partial name="_StudentsCoursesTesting" model="item" />
             }
         }
-        @*@if (Model.Courses != null)
-            {
-                foreach (var value in Model.Courses)
-                {
-            <tr>
-                <th>Chosen course</th>
-                <td>@value.Title</td>
-                <td>@value.Subject</td>
-                @if (value.Teacher != null)
-                {
-                    <td>@value.Teacher</td>
-                }
-                @if (value.Assignments != null)
-                {
-                    foreach (var item in value.Assignments)
-                    {
-                        <td>@item.Title</td>
-                        <td>@item.Subject</td>
-                        <td>@item.Description</td>
-                        <td>@item.DueToDate</td>
-                    }
-                }
-                @if (Model.Students != null)
-                {
-                    foreach (var item in Model.Students)
-                    {
-                        <td>@item.FirstName</td>
-                        <td>@item.SecondName</td>
-                        <td>@item.SchoolYear</td>
-                        <td>@item.PhoneNumber</td>
-                    }
-
-                }
-            </tr>
-                }
-            }*@
+        else
+        {
+        <tr>
+            <td>
+                <h3>
+                    There are no available students for this course. Add some!
+                </h3>
+            </td>
+        </tr>
+        }
         @*@foreach (var item in Model.Students)
             {
                 <partial name="_AddStudents" model="Model" />
@@ -63,17 +34,6 @@
 
     </thead>
     <tbody>
-        <tr>
-            @*@if (Model.Students != null)
-                {
-                    foreach (var item in Model.Students)
-                    {
-                        <td>
-                            <partial name="_AddStudentsStudentTest" model="item" />
-                        </td>
-                    }
-                }*@
-        </tr>
         <tr>
             <td>
                 <a class="btn btn-success" asp-action="Index" asp-controller="Course">Return</a>
