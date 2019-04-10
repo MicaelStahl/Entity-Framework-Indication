@@ -19,7 +19,9 @@ namespace Entity_Framework_Indication.Interfaces
 
         List<StudentsCourses> FindCourseWithStudents(int? id);
 
-        List<StudentsCourses> FindNonAssignedStudents(int? id);
+        List<Course> FindCourseNoTeacher();
+
+        List<Student> FindNonAssignedStudents(int? id);
 
         Course EditCourse(Course course);
 

@@ -1,7 +1,7 @@
 ﻿@model List<Course>
 
 <hr />
-<h3 class="offset-1">Create new Course</h3>
+<h3 class="offset-1">Add teacher to course</h3>
 <br />
 <hr />
 
@@ -19,16 +19,13 @@
         {
             foreach (var item in Model)
             {
-                @await Html.PartialAsync("_Course", item);
+                @await Html.PartialAsync("_AddTeacherToCourse", item);
             }
         }
     </tbody>
 </table>
 <br />
 <br />
-<a class="offset-1" asp-action="Create" asp-controller="Course">
-    <input type="submit" class="btn btn-primary" value="Create Course" />
-</a>
-<a class="offset-1" asp-action="AddTeacher" asp-controller="Course">
-    <input class="btn btn-success" type="submit" name="Id" value="Add Teacher to a course" />
+<a class="offset-1" asp-action="Index" asp-controller="Course">
+    <input type="submit" class="btn btn-primary" value="Return" />
 </a>

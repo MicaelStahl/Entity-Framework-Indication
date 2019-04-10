@@ -37,22 +37,26 @@ namespace Entity_Framework_Indication.Models
             {
                 return null;
             }
-            var courses = _db.Courses.SingleOrDefault(x => x.Id == id);
+            //var courses = _db.Courses.SingleOrDefault(x => x.Id == id);
 
-            courses.StudentsCourses = _db.Sc
+            // Using "AsNoTracking" which makes the database have to work less,
+            // Which makes it more efficient in the grand scheme.
+            var courses = _db.Sc
                 .Include(x => x.Course.StudentsCourses)
                 .ThenInclude(x => x.Student)
-                .Where(x => x.CourseId == courses.Id)
+                .Where(x => x.CourseId == id)
+                .Include(x=>x.Course.Teacher)
+                .AsNoTracking()
                 .ToList();
 
-            if (courses.StudentsCourses == null)
+            if (courses == null)
             {
                 return null;
             }
-            return courses.StudentsCourses;
+            return courses;
         }
 
-        public List<StudentsCourses> FindNonAssignedStudents(int? id)
+        public List<Student> FindNonAssignedStudents(int? id)
         {
             if (id == 0 || id == null)
             {
@@ -60,19 +64,48 @@ namespace Entity_Framework_Indication.Models
             }
             var courses = _db.Courses.SingleOrDefault(x => x.Id == id);
 
-            courses.StudentsCourses = _db.Sc
-                .Include(x => x.Course.StudentsCourses)
-                .ThenInclude(x => x.Student)
-                .Where(x => x.CourseId == courses.Id)
+            var students = _db.Students
+                .Include(x => x.StudentsCourses)
+                .ThenInclude(x => x.Course)
                 .ToList();
 
+            List<Student> removeStudents = new List<Student>();
 
-
-            if (courses.StudentsCourses == null)
+            foreach (var item in students)
             {
-                return null;
+                foreach (var value in item.StudentsCourses)
+                {
+                    if (value.CourseId == courses.Id)
+                    {
+                        removeStudents.Add(item);
+                        break;
+                    }
+                }
             }
-            return courses.StudentsCourses;
+            foreach (var item in removeStudents)
+            {
+                students.Remove(item);
+            }
+            return students;
+        }
+
+        public List<Course> FindCourseNoTeacher()
+        {
+            List<Course> courses = new List<Course>();
+
+            var course = _db.Courses
+                .Include(x=>x.Teacher)
+                .ToList();
+
+            foreach (var item in course)
+            {
+                if (item.Teacher == null)
+                {
+                    courses.Add(item);
+                }
+            }
+
+            return courses;
         }
 
         public bool AddStudent(int? courseId, int? studentId)
@@ -93,9 +126,7 @@ namespace Entity_Framework_Indication.Models
                     StudentId = student.Id,
                     Student = student
                 };
-
                 _db.Sc.Add(sc);
-                course.StudentsCourses.Add(sc);
 
                 _db.SaveChanges();
 
@@ -124,7 +155,6 @@ namespace Entity_Framework_Indication.Models
                 Teacher = course.Teacher,
                 Assignments = course.Assignments,
             };
-
             _db.Courses.Add(newCourse);
             _db.SaveChanges();
 

@@ -1,5 +1,6 @@
 ﻿using Entity_Framework_Indication.Interfaces;
 using Entity_Framework_Indication.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace Entity_Framework_Indication.Models
 
         public List<Teacher> AllTeachers()
         {
+
             return _db.Teachers.ToList();
         }
 
@@ -26,7 +28,7 @@ namespace Entity_Framework_Indication.Models
             if (string.IsNullOrWhiteSpace(teacher.FirstName)
                 || string.IsNullOrWhiteSpace(teacher.SecondName)
                 || string.IsNullOrWhiteSpace(teacher.PhoneNumber)
-                || string.IsNullOrWhiteSpace(teacher.TeachingSubject))
+                || string.IsNullOrWhiteSpace(teacher.Specification))
             {
                 return null;
             }
@@ -36,7 +38,7 @@ namespace Entity_Framework_Indication.Models
                 FirstName = teacher.FirstName,
                 SecondName = teacher.SecondName,
                 PhoneNumber = teacher.PhoneNumber,
-                TeachingSubject = teacher.TeachingSubject
+                Specification = teacher.Specification,
             };
 
             _db.Teachers.Add(newTeacher);
@@ -45,7 +47,7 @@ namespace Entity_Framework_Indication.Models
             return newTeacher;
         }
 
-        public bool EditTeacher(Teacher teacher)
+        public Teacher EditTeacher(Teacher teacher)
         {
             var original = _db.Teachers.SingleOrDefault(x => x.Id == teacher.Id);
 
@@ -54,14 +56,46 @@ namespace Entity_Framework_Indication.Models
                 original.FirstName = teacher.FirstName;
                 original.SecondName = teacher.SecondName;
                 original.PhoneNumber = teacher.PhoneNumber;
-                original.TeachingSubject = teacher.TeachingSubject;
-                original.Courses = teacher.Courses;
+                original.Specification = teacher.Specification;
 
                 _db.SaveChanges();
 
-                return true;
+                return original;
             }
-            return false;
+            return teacher;
+        }
+
+        public bool AddCourseToTeacher(int? courseId, int? teacherId)
+        {
+            var course = _db.Courses.SingleOrDefault(x => x.Id == courseId);
+            var teacher = _db.Teachers.SingleOrDefault(x => x.Id == teacherId);
+
+            if (course == null || teacher == null)
+            {
+                return false;
+            }
+
+            course.Teacher = teacher;
+            _db.SaveChanges();
+
+            return true;
+        }
+
+        public List<Teacher> FindTeacherWithEverything(int id)
+        {
+            var teacher = _db.Teachers
+                .Where(x => x.Id == id)
+                .Include(x => x.Courses)
+                .ThenInclude(x => x.StudentsCourses)
+                .ThenInclude(x => x.Course)
+                .ThenInclude(x => x.Assignments)
+                .Include(x => x.Courses)
+                .ThenInclude(x => x.StudentsCourses)
+                .ThenInclude(x => x.Student)
+                .AsNoTracking()
+                .ToList();
+
+            return teacher;
         }
 
         public Teacher FindTeacher(int id)

@@ -1,0 +1,27 @@
+﻿@model Teacher
+@{
+    ViewData["Title"] = "Edit";
+}
+<br />
+<h1 class="offset-2">Edit</h1>
+<hr />
+<br />
+
+<form method="post" class="offset-2" asp-action="Edit" asp-controller="Teacher" asp-route-id="@Model.Id">
+    <input asp-for="FirstName" value="@Model.FirstName" placeholder="Firstname.." />
+    <br />
+    <br />
+    <input asp-for="SecondName" value="@Model.SecondName" placeholder="Secondname.." />
+    <br />
+    <br />
+    <input asp-for="Specification" value="@Model.Specification" placeholder="Specification.." />
+    <br />
+    <br />
+    <input asp-for="PhoneNumber" value="@Model.PhoneNumber" placeholder="Phonenumber.." />
+    <br />
+    <br />
+
+    <button class="btn btn-success">Submit</button>
+    <a asp-action="Index" asp-controller="Teacher" class="btn btn-primary">Return</a>
+    <a asp-action="Remove" asp-controller="Teacher" class="btn btn-danger">Delete</a>
+</form>

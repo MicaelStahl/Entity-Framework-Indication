@@ -15,22 +15,19 @@ namespace Entity_Framework_Indication.Controllers
     {
         private readonly ICourseService _courseDB;
         private readonly IAssignmentService _assignmentDB;
-        private readonly SchoolDbContext _dbContext;
 
-        private const string SessionKeyTesting = "_Testing";
+        private const string SessionKeyAddStudents = "_AddStudents";
 
-        public CourseController(ICourseService courseService, IAssignmentService assignmentService,
-            SchoolDbContext dbContext)
+        public CourseController(ICourseService courseService, IAssignmentService assignmentService)
         {
             _courseDB = courseService;
             _assignmentDB = assignmentService;
-            _dbContext = dbContext;
         }
 
         [AutoValidateAntiforgeryToken]
         public IActionResult Index()
         {
-            HttpContext.Session.Remove("_Testing");
+            HttpContext.Session.Remove("_AllStudents");
             return View(_courseDB.AllCourses());
         }
 
@@ -69,7 +66,7 @@ namespace Entity_Framework_Indication.Controllers
         {
             if (id != null)
             {
-                HttpContext.Session.SetInt32("_Testing", (int)id);
+                HttpContext.Session.SetInt32("_AddStudents", (int)id);
 
                 var studentCourses = _courseDB.FindNonAssignedStudents(id);
 
@@ -87,14 +84,25 @@ namespace Entity_Framework_Indication.Controllers
         {
             if (id != null || id == 0)
             {
-                var course = HttpContext.Session.GetInt32("_Testing");
+                var courseId = HttpContext.Session.GetInt32("_Testing");
 
-                _courseDB.AddStudent(course, id);
+                _courseDB.AddStudent(courseId, id);
 
-                return View(_dbContext);
+                var studentList = _courseDB.FindNonAssignedStudents(courseId);
+
+                return View(studentList);
             }
 
             return View();
+        }
+
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult AddTeacher()
+        {
+            var course = _courseDB.FindCourseNoTeacher();
+
+            return View(course);
         }
 
         [HttpGet]

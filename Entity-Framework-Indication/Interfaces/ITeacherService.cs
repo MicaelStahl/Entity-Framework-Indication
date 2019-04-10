@@ -13,9 +13,13 @@ namespace Entity_Framework_Indication.Interfaces
 
         List<Teacher> AllTeachers();
 
+        List<Teacher> FindTeacherWithEverything(int id);
+
         Teacher FindTeacher(int id);
 
-        bool EditTeacher(Teacher teacher);
+        Teacher EditTeacher(Teacher teacher);
+
+        bool AddCourseToTeacher(int? courseId, int? teacherId);
 
         bool RemoveTeacher(int id);
 

@@ -1,52 +1,28 @@
-﻿@model SchoolDbContext
+﻿@model Student
 
-@*@
-    <tr>
-        <td>@item.FirstName</td>
-        <td>@item.SecondName</td>
-        <td>@item.SchoolYear</td>
-        <td>@item.PhoneNumber</td>
-        @if (item.StudentsCourses != null)
-        {
-            foreach (var value in item.StudentsCourses)
+<form class="col-12" asp-action="AddStudents" asp-controller="Course" asp-route-id="@Model.Id" method="post">
+    <table class="col-3 offset-4 border table-active" style="margin-bottom: 5px;">
+        <tr class="row border" style="margin: 0;">
+
+            <td class="col-2">@Model.FirstName</td>
+            <td class="col-3">@Model.SecondName</td>
+            <td class="col-2">@Model.SchoolYear</td>
+            <td class="col-3">@Model.PhoneNumber</td>
+
+            @if (Model.StudentsCourses != null)
             {
-                <td>@value.Course</td>
+                <td><h4>Already part of these courses:</h4></td>
+                <td><br /></td>
+                foreach (var item in Model.StudentsCourses)
+                {
+                    <td>- @item.Course.Title</td>
+                }
             }
-
-        }
-    </tr>
-}*@
-
-@foreach (var item in Model.Courses)
-{
-    <tr>
-        <td><input type="checkbox" id="@item.Id" /></td>
-        <td>@item.Title</td>
-        <td>@item.Subject</td>
-        <td>@item.Teacher</td>
-        @if (item.Assignments != null)
-        {
-            <td>Assignments</td>
-            foreach (var value in item.Assignments)
-            {
-                <td>@value.Title</td>
-                <td>@value.Subject</td>
-                <td>@value.Description</td>
-                <td>@value.DueToDate</td>
-            }
-        }
-        @if (item.StudentsCourses != null)
-        {
-            <td>Students part of the course</td>
-            foreach (var value in item.StudentsCourses)
-            {
-
-                <td>@value.Student.FirstName</td>
-                <td>@value.Student.SecondName</td>
-                <td>@value.Student.SchoolYear</td>
-                <td>@value.Student.PhoneNumber</td>
-                <td>@*@item.Grades*@</td>
-            }
-        }
-    </tr>
-}
+        </tr>
+        <tr class="row border" style="margin: 0;">
+            <td>
+                <button class="btn btn-success">Add Student</button>
+            </td>
+        </tr>
+    </table>
+</form>

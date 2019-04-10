@@ -1,0 +1,30 @@
+﻿@model Course
+
+<tr class="row">
+    <td class="col-1 border">@Model.Id</td>
+    <td class="col-3 border">@Model.Title</td>
+    <td class="col-2 border">@Model.Subject</td>
+    @if (Model.StudentsCourses != null)
+    {
+        foreach (var item in Model.StudentsCourses)
+        {
+            if (item.Student != null)
+            {
+                <td class="col-2 border">@item.Student.FirstName</td>
+                <td class="col-2 border">@item.Student.SecondName</td>
+            }
+        }
+    }
+    @if (Model.Assignments != null)
+    {
+        foreach (var item in Model.Assignments)
+        {
+            <td class="col-2 border">@item</td>
+        }
+    }
+    <td class=" border col-4">
+        <a asp-action="AddTeacher" asp-controller="Teacher" asp-route-id="@Model.Id">
+            <input class="btn btn-success" type="submit" name="Id" value="Pick me pick me" />
+        </a>
+    </td>
+</tr>

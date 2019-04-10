@@ -1,0 +1,12 @@
+﻿@model List<Teacher>
+@{
+    ViewData["Title"] = "Details";
+}
+
+@foreach (var item in Model)
+{
+    <partial name="_Details" model="item" />
+
+    break;
+}
+

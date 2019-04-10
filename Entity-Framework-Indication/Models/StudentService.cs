@@ -1,5 +1,6 @@
 ﻿using Entity_Framework_Indication.Interfaces;
 using Entity_Framework_Indication.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,18 @@ namespace Entity_Framework_Indication.Models
 
         public List<Student> AllStudents()
         {
+            var students = _db.Students
+                .Include(x => x.StudentsCourses)
+                .ThenInclude(x => x.Course)
+                .ThenInclude(x=>x.Assignments)
+                .Include(x=>x.StudentsCourses)
+                .ThenInclude(x=>x.Course)
+                .ThenInclude(x=>x.Teacher)
+                .AsNoTracking()
+                .ToList();
+
+
+
             return _db.Students.ToList();
         }
 

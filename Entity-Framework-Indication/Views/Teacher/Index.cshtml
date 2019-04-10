@@ -1,5 +1,32 @@
-﻿@{
+﻿@model List<Teacher>
+@{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<br />
+<h1>List of all teachers</h1>
+<hr />
+<br />
+
+<table class="table-striped offset-1 container">
+    <thead>
+        <tr class="row">
+            <th class="col-1 border">ID</th>
+            <th class="col-2 border">Firstname</th>
+            <th class="col-2 border">Secondname</th>
+            <th class="col-2 border">Specification</th>
+            <th class="col-2 border">Phonenumber</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <partial name="_Teachers" model="item" />
+        }
+        <tr>
+            <td>
+                <a asp-action="Create" asp-controller="Teacher" class="btn btn-success">Create new teacher</a>
+            </td>
+        </tr>
+    </tbody>
+</table>

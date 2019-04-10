@@ -1,0 +1,15 @@
+﻿@model Teacher
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<tr class="row">
+    <td class="col-2 border">@Model.FirstName</td>
+    <td class="col-2 border">@Model.SecondName</td>
+    <td class="col-4 border">@Model.Specification</td>
+    <td class="col-2 border">@Model.PhoneNumber</td>
+
+    <td>
+    <a class="btn btn-success" asp-action="AddTeacherComplete" asp-controller="Teacher" asp-route-id="@Model.Id">Pick me</a>
+    </td>
+</tr>

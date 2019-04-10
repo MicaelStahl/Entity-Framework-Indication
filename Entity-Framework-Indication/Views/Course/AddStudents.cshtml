@@ -1,4 +1,4 @@
-﻿@model List<StudentsCourses>
+﻿@model List<Student>
 @{
     ViewData["Title"] = "Edit";
 }
@@ -7,37 +7,26 @@
 <br />
 <hr />
 
-<table class="table-active col-3 border">
-    <thead>
-        @if (Model != null)
-        {
-            foreach (var item in Model)
-            {
-                <partial name="_StudentsCoursesTesting" model="item" />
-            }
-        }
-        else
-        {
-        <tr>
-            <td>
-                <h3>
-                    There are no available students for this course. Add some!
-                </h3>
-            </td>
-        </tr>
-        }
-        @*@foreach (var item in Model.Students)
-            {
-                <partial name="_AddStudents" model="Model" />
-            }*@
+<tr class="offset-2">
+    <td>
+        <a class="btn btn-primary" asp-action="Index" asp-controller="Course">Return</a>
+    </td>
+</tr>
 
-
-    </thead>
-    <tbody>
-        <tr>
-            <td>
-                <a class="btn btn-success" asp-action="Index" asp-controller="Course">Return</a>
-            </td>
-        </tr>
-    </tbody>
-</table>
+@if (Model != null || Model.Count != 0)
+{
+    foreach (var item in Model)
+    {
+        <partial name="_AddStudents" model="item" />
+    }
+}
+else
+{
+    <tr>
+        <th>
+            <h3>
+                All Students are already assigned to this course.
+            </h3>
+        </th>
+    </tr>
+}

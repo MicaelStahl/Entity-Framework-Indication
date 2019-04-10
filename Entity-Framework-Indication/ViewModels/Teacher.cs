@@ -17,10 +17,11 @@ namespace Entity_Framework_Indication.ViewModels
         [StringLength(20, ErrorMessage = "Secondname cannot be longer than 20 letters.")]
         public string SecondName { get; set; }
         [Required]
+        [StringLength(50, ErrorMessage = "Specification cannot be longer than 50 letters.")]
+        public string Specification { get; set; }
+        [Required]
         [StringLength(12, ErrorMessage = "Number cannot be longer than 12 characters.")]
         public string PhoneNumber { get; set; }
-        [StringLength(20, ErrorMessage = "Subject cannot be longer than 20 Characters.")]
-        public string TeachingSubject { get; set; }
 
         public List<Course> Courses { get; set; }
     }
