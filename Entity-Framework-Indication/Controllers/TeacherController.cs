@@ -46,7 +46,7 @@ namespace Entity_Framework_Indication.Controllers
 
                 _db.AddCourseToTeacher(courseId, id);
 
-                return RedirectToAction(nameof(Index), "Course");
+                return RedirectToAction(nameof(Details), "Course", new { courseId });
             }
             return BadRequest();
         }

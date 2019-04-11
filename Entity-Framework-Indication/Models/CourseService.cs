@@ -31,29 +31,31 @@ namespace Entity_Framework_Indication.Models
             return false;
         }
 
-        public List<StudentsCourses> FindCourseWithStudents(int? id)
+        public Course FindCourseWithStudents(int? id)
         {
-            if (id == 0 || id == null)
+            if (id == null || id == 0)
             {
                 return null;
             }
-            //var courses = _db.Courses.SingleOrDefault(x => x.Id == id);
-
-            // Using "AsNoTracking" which makes the database have to work less,
-            // Which makes it more efficient in the grand scheme.
-            var courses = _db.Sc
-                .Include(x => x.Course.StudentsCourses)
+            //var course = _db.Courses.SingleOrDefault(x => x.Id == id);
+            // Making it into a list since I'm using Partial Views.
+            var courses = _db.Courses
+                .Include(x => x.StudentsCourses)
                 .ThenInclude(x => x.Student)
-                .Where(x => x.CourseId == id)
-                .Include(x=>x.Course.Teacher)
-                .AsNoTracking()
-                .ToList();
+                .Include(x => x.Teacher)
+                .Include(x => x.Assignments)
+                .SingleOrDefault(x => x.Id == id);
 
-            if (courses == null)
-            {
-                return null;
-            }
+            // This code is to get a Course instead of a List<Course>
+            //var test = _db.Courses
+            //    .Include(x => x.StudentsCourses)
+            //    .ThenInclude(x => x.Student)
+            //    .Include(x => x.Teacher)
+            //    .Include(x => x.Assignments)
+            //    .SingleOrDefault(x=>x.Id == id);
+
             return courses;
+
         }
 
         public List<Student> FindNonAssignedStudents(int? id)
@@ -89,12 +91,12 @@ namespace Entity_Framework_Indication.Models
             return students;
         }
 
-        public List<Course> FindCourseNoTeacher()
+        public List<Course> FindCoursesNoTeacher()
         {
             List<Course> courses = new List<Course>();
 
             var course = _db.Courses
-                .Include(x=>x.Teacher)
+                .Include(x => x.Teacher)
                 .ToList();
 
             foreach (var item in course)
@@ -104,7 +106,6 @@ namespace Entity_Framework_Indication.Models
                     courses.Add(item);
                 }
             }
-
             return courses;
         }
 
@@ -196,6 +197,61 @@ namespace Entity_Framework_Indication.Models
             _db.SaveChanges();
 
             return true;
+        }
+
+        public bool RemoveStudentFromCourse(int? courseId, int? studentId)
+        {
+            if (courseId == null || courseId == 0 || studentId == null || studentId == 0)
+            {
+                return false;
+            }
+
+            var course = _db.Courses
+                .Include(x => x.StudentsCourses)
+                .ThenInclude(x => x.Student)
+                .SingleOrDefault(x => x.Id == courseId);
+
+            foreach (var item in course.StudentsCourses)
+            {
+                if (item.StudentId == studentId)
+                {
+                    course.StudentsCourses.Remove(item);
+
+                    _db.SaveChanges();
+
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool RemoveTeacherFromCourse(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return false;
+            }
+            var course = _db.Courses.SingleOrDefault(x => x.Id == id);
+
+            var removeTeacher = _db.Courses
+                .Include(x => x.Teacher)
+                .Where(x => x.Id == id)
+                .ToList();
+
+            if (removeTeacher == null)
+            {
+                return false;
+            }
+
+            if (course.Teacher != null)
+            {
+                course.Teacher = null;
+
+                _db.SaveChanges();
+
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Entity_Framework_Indication.Controllers
         private readonly IAssignmentService _assignmentDB;
 
         private const string SessionKeyAddStudents = "_AddStudents";
+        private const string SessionKeyRemoveStudent = "_RemoveStudent";
 
         public CourseController(ICourseService courseService, IAssignmentService assignmentService)
         {
@@ -84,7 +85,7 @@ namespace Entity_Framework_Indication.Controllers
         {
             if (id != null || id == 0)
             {
-                var courseId = HttpContext.Session.GetInt32("_Testing");
+                var courseId = HttpContext.Session.GetInt32("_AddStudents");
 
                 _courseDB.AddStudent(courseId, id);
 
@@ -96,11 +97,12 @@ namespace Entity_Framework_Indication.Controllers
             return View();
         }
 
+        // the other Actions for adding teacher to course are in TeacherController.
         [HttpGet]
         [AutoValidateAntiforgeryToken]
         public IActionResult AddTeacher()
         {
-            var course = _courseDB.FindCourseNoTeacher();
+            var course = _courseDB.FindCoursesNoTeacher();
 
             return View(course);
         }
@@ -124,7 +126,6 @@ namespace Entity_Framework_Indication.Controllers
             return View();
         }
 
-        [AutoValidateAntiforgeryToken]
         public IActionResult Details(int? id)
         {
             if (id != null)
@@ -133,7 +134,7 @@ namespace Entity_Framework_Indication.Controllers
 
                 return View(course);
             }
-            return View();
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpGet]
@@ -171,6 +172,58 @@ namespace Entity_Framework_Indication.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View();
+        }
+
+        [AutoValidateAntiforgeryToken]
+        public IActionResult RemoveStudent(int? id)
+        {
+            if (id != null || id != 0)
+            {
+                var course = _courseDB.FindCourseWithStudents(id);
+                HttpContext.Session.SetInt32("_RemoveStudent", (int)id);
+
+                if (course != null)
+                {
+                    return View(course);
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [AutoValidateAntiforgeryToken]
+        public IActionResult RemoveStudentComplete(int? studentId)
+        {
+            if (studentId == null || studentId == 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            var courseId = HttpContext.Session.GetInt32("_RemoveStudent");
+            if (courseId == null || courseId == 0)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            var boolean = _courseDB.RemoveStudentFromCourse(courseId, studentId);
+
+            if (boolean == false)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+            return RedirectToAction(nameof(Details), "Course", new { courseId });
+        }
+
+        [AutoValidateAntiforgeryToken]
+        public IActionResult RemoveTeacher(int? id)
+        {
+            if (id != null || id != 0)
+            {
+                var boolean = _courseDB.RemoveTeacherFromCourse(id);
+
+                if (boolean)
+                {
+                    return RedirectToAction(nameof(Details), "Course", new { id });
+                }
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }

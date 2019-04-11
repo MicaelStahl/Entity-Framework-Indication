@@ -1,12 +1,117 @@
-﻿@model List<StudentsCourses>
+﻿@model Course
 @{
     ViewData["Title"] = "Details";
 }
 
-@foreach (var item in Model)
-{
-    <partial name="_Details" model="item" />
+<br />
+<h1 class="offset-5">@Model.Title</h1>
+<hr />
+<br />
 
-    break;
-}
-    
+<table class="table-active offset-4 col-4 border">
+    <tr>
+        <td>@Model.Title</td>
+    </tr>
+    <tr>
+        <td>@Model.Subject</td>
+    </tr>
+    <tr>
+        @if (Model.Teacher != null)
+        {
+            <td><p>The teacher for this course is: @Model.Teacher.FirstName</p></td>
+        }
+        else
+        {
+            <td><p>There is no teacher for this course! Consider adding one.</p></td>
+        }
+    </tr>
+    @if (Model.StudentsCourses != null || Model.StudentsCourses.Count != 0)
+    {
+        <tr>
+            <td><h5>Students in selected course</h5></td>
+        </tr>
+        <tr class="row border" style="margin: 0;">
+            <th class="col-3">Firstname</th>
+            <th class="col-3">Secondname</th>
+            <th class="col-3">Class</th>
+            <th class="col-3">Phonenumber</th>
+        </tr>
+        @foreach (var item in Model.StudentsCourses)
+        {
+            <tr class="row border" style="margin: 0;">
+                <td class="col-3">@item.Student.FirstName</td>
+                <td class="col-3">@item.Student.SecondName</td>
+                <td class="col-3">@item.Student.SchoolYear</td>
+                <td class="col-3">@item.Student.PhoneNumber</td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td><p>This course doesn't have any students... Consider adding some.</p></td>
+        </tr>
+    }
+    @if (Model.Assignments.Count != 0 || Model.Assignments != null)
+    {
+        <tr class="row border" style="margin: 0;">
+            <td><h5>Assignments:</h5></td>
+        </tr>
+        foreach (var item in Model.Assignments)
+        {
+            <tr>
+
+                <td>@item.Title</td>
+                <td>@item.Course</td>
+                <td>@item.Subject</td>
+                <td>@item.Description</td>
+                <td>@item.DueToDate</td>
+            </tr>
+        }
+    }
+    else
+    {
+        <tr>
+            <td><p>There's currently no assignments to this course. Consider adding some</p></td>
+        </tr>
+    }
+    <tr>
+        <td>
+            <a class="btn btn-info" asp-action="AddStudents" asp-controller="Course" asp-route-id="@Model.Id">
+                Add students
+            </a>
+            <a class="btn btn-warning" asp-action="Edit" asp-controller="Course" asp-route-id="@Model.Id">
+                Edit
+            </a>
+            @if (Model.Teacher == null)
+            {
+                <a class="btn btn-info" asp-action="AddTeacher" asp-controller="Teacher" asp-route-id="@Model.Id">
+                    Add Teacher
+                </a>
+            }
+        </td>
+    </tr>
+    <tr>
+        <td>
+            @if (Model.Teacher != null)
+            {
+                <a class="btn btn-danger" asp-action="RemoveTeacher" asp-controller="Course" asp-route-id="@Model.Id">
+                    Remove Teacher
+                </a>
+            }
+            <a class="btn btn-danger" asp-action="RemoveStudent" asp-controller="Course" asp-route-id="@Model.Id">
+                Remove a Student
+            </a>
+            <a class="btn btn-danger" asp-action="Remove" asp-controller="Course" asp-route-id="@Model.Id">
+                Remove Course
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a asp-action="Index" asp-controller="Course">
+                <input type="submit" class="btn btn-primary" value="Return" />
+            </a>
+        </td>
+    </tr>
+</table>
