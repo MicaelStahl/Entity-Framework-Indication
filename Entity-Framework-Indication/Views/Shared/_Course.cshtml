@@ -6,7 +6,7 @@
     <td class="col-2 border">@Model.Subject</td>
 
     <td class=" border col-6">
-        <a class="btn btn-success" asp-action="CreateAssignment" asp-controller="Course" asp-route-courseId="@Model.Id">
+        <a class="btn btn-success" asp-action="CreateAssignment" asp-controller="Course" asp-route-id="@Model.Id">
             Create new assignment
         </a>
         <a class="btn btn-success" asp-action="AddStudents" asp-controller="Course" asp-route-id="@Model.Id">

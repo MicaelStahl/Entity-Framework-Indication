@@ -21,22 +21,26 @@ namespace Entity_Framework_Indication.Models
             return _db.Assignments.ToList();
         }
 
-        public Assignment CreateAssignment(string title, string description, string subject, DateTime dueToDate, string grades)
+        public Assignment CreateAssignment(Assignment assignment)
         {
-            if (string.IsNullOrWhiteSpace(title) ||
-                string.IsNullOrWhiteSpace(subject) ||
-                dueToDate != null ||
-                string.IsNullOrWhiteSpace(grades))
+            if (string.IsNullOrWhiteSpace(assignment.Title) ||
+                string.IsNullOrWhiteSpace(assignment.Subject) ||
+                assignment.DueToDate != null)
             {
                 return null;
             }
-            Assignment assignment = new Assignment()
-            { Title = title, Description = description, Subject = subject, DueToDate = dueToDate, /*Grades = grades*/ };
+            Assignment newAssignment = new Assignment()
+            {
+                Title = assignment.Title,
+                Description = assignment.Description,
+                Subject = assignment.Subject,
+                DueToDate = assignment.DueToDate
+            };
 
-            _db.Assignments.Add(assignment);
+            _db.Assignments.Add(newAssignment);
             _db.SaveChanges();
 
-            return assignment;
+            return newAssignment;
         }
 
         public bool EditAssignment(Assignment assignment)
@@ -49,7 +53,6 @@ namespace Entity_Framework_Indication.Models
                 orig.Description = assignment.Description;
                 orig.Subject = assignment.Subject;
                 orig.DueToDate = assignment.DueToDate;
-                //orig.Grades = assignment.Grades;
 
                 _db.SaveChanges();
 
@@ -70,20 +73,6 @@ namespace Entity_Framework_Indication.Models
             if (assignment != null)
             {
                 _db.Assignments.Remove(assignment);
-
-                return true;
-            }
-            return false;
-        }
-
-        public bool UpdateGrades(int id, string grades)
-        {
-            var newGrades = _db.Assignments.SingleOrDefault(x => x.Id == id);
-
-            if (newGrades != null)
-            {
-                //newGrades.Grades = grades;
-                _db.SaveChanges();
 
                 return true;
             }

@@ -4,11 +4,32 @@
 }
 
 <br />
-<h1>CreateAssignment</h1>
+<h1 class="offset-2">Create Assignment</h1>
 <hr />
 <br />
 
-<form class="offset-2" asp-action="CreateAssignment" asp-controller="Course" asp-route-courseId="@Model.Course.Id" asp-route-assignmentId="@Model.Id">
+<tr>
+
+    @if (Model.Course.Assignments.Count != 0)
+    {
+        <td><h4 class="offset-2">Creating assignment for course: @Model.Course.Title | @Model.Course.Subject. This course already has these assignments</h4></td>
+
+    }
+    else
+    {
+        <td><h4 class="offset-2">Creating assignment for course: @Model.Course.Title | @Model.Course.Subject</h4></td>
+    }
+
+    <td>
+        @foreach (var item in Model.Course.Assignments)
+        {
+            <p>@item.Title | @item.Subject | @item.Description</p>
+        }
+    </td>
+    <td class="col-12"><hr /></td>
+</tr>
+
+<form class="offset-2" asp-action="CreateAssignment" asp-controller="Course" asp-route-id="@Model.Course.Id" asp-route-assignmentId="@Model.Id">
 
     <label asp-for="Title"></label>
     <br />

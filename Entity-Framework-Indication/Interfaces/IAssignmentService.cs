@@ -9,7 +9,7 @@ namespace Entity_Framework_Indication.Interfaces
 {
     public interface IAssignmentService
     {
-        Assignment CreateAssignment(string title, string description, string subject, DateTime dueToDate, string grades);
+        Assignment CreateAssignment(Assignment assignment);
 
         List<Assignment> AllAssignments();
 
@@ -17,10 +17,6 @@ namespace Entity_Framework_Indication.Interfaces
 
         bool RemoveAssignment(int id);
 
-        bool UpdateGrades(int id, string grades);
-
         bool EditAssignment(Assignment assignment);
-
-
     }
 }

@@ -98,24 +98,26 @@ namespace Entity_Framework_Indication.Controllers
 
         [HttpGet]
         [AutoValidateAntiforgeryToken]
-        public IActionResult CreateAssignment(int? courseId)
+        public IActionResult CreateAssignment(int? id)
         {
-            var course = _courseDB.FindCourse(courseId);
+            var course = _courseDB.FindCourse(id);
             Assignment assignment = new Assignment() { Course = course };
 
             return View(assignment);
         }
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult CreateAssignment(int? courseId, Assignment assignment)
+        public IActionResult CreateAssignment(int? id, Assignment assignment)
         {
-            if (courseId != null || courseId != 0 || ModelState.IsValid)
+            if (id != null || id != 0 || ModelState.IsValid)
             {
-                var boolean = _courseDB.AddAssignment(courseId, assignment);
+                _assignmentDB.CreateAssignment(assignment);
+
+                var boolean = _courseDB.AddAssignment(id, assignment);
 
                 if (boolean)
                 {
-                    return RedirectToAction(nameof(Details), "Course", new { courseId });
+                    return RedirectToAction(nameof(Details), "Course", new { id });
                 }
                 return BadRequest();
             }
@@ -148,14 +150,11 @@ namespace Entity_Framework_Indication.Controllers
         }
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(Course course, List<Assignment> assignments)
+        public IActionResult Edit(Course course)
         {
             if (ModelState.IsValid)
             {
-                // Testing to see if I can send a list through a view. Might not be possible
-                // but it's good practice. if I succeed, it'll look pretty dope.
-                course.Assignments = assignments;
-                var newCourse = _courseDB.EditCourse(course, assignments);
+                var newCourse = _courseDB.EditCourse(course);
 
                 return RedirectToAction(nameof(Details), "Course", newCourse);
             }
@@ -181,16 +180,27 @@ namespace Entity_Framework_Indication.Controllers
 
         }
         [HttpPost]
-        [AutoValidateAntiforgeryToken]  
-        public IActionResult EditAssignment(Assignment assignment)
+        [AutoValidateAntiforgeryToken]
+        public IActionResult EditAssignment(int? courseId, Assignment assignment)
         {
+            if (courseId == null || courseId == 0)
+            {
+                return NotFound();
+            }
             // Friendly reminder for myself:
             // Create a NEW METHOD to edit the assignment and add it into the correct course.
             // this might be done by using a Session, but prolly with using include in the GET
             // and then send both the values up.
             // Goodnight :)
+            if (ModelState.IsValid)
+            {
+                var boolean = _assignmentDB.EditAssignment(assignment);
 
-            //var newAssignment = _courseDB.EditAssignment()
+                if (boolean)
+                {
+                    return RedirectToAction(nameof(Details), "Course", new { courseId });
+                }
+            }
 
             return BadRequest();
         }

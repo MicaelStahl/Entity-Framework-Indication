@@ -24,6 +24,8 @@ namespace Entity_Framework_Indication.Models
                 var course = _db.Courses.SingleOrDefault(x => x.Id == id);
                 course.Assignments.Add(assignment);
 
+                _db.Assignments.Add(assignment);
+
                 _db.SaveChanges();
 
                 return true;
@@ -81,7 +83,7 @@ namespace Entity_Framework_Indication.Models
                 Subject = course.Subject,
                 StudentsCourses = course.StudentsCourses,
                 Teacher = course.Teacher,
-                Assignments = course.Assignments,
+                Assignments = course.Assignments
             };
             _db.Courses.Add(newCourse);
             _db.SaveChanges();
@@ -89,7 +91,7 @@ namespace Entity_Framework_Indication.Models
             return newCourse;
         }
 
-        public Course EditCourse(Course course, List<Assignment> assignments)
+        public Course EditCourse(Course course)
         {
             var original = _db.Courses
                 .Include(x=>x.StudentsCourses)
@@ -103,7 +105,7 @@ namespace Entity_Framework_Indication.Models
                 original.Subject = course.Subject;
                 original.StudentsCourses = course.StudentsCourses;
                 original.Teacher = course.Teacher;
-                original.Assignments = assignments;
+                original.Assignments = course.Assignments;
 
                 _db.SaveChanges();
 
@@ -146,6 +148,7 @@ namespace Entity_Framework_Indication.Models
                 .ThenInclude(x => x.Student)
                 .Include(x => x.Teacher)
                 .Include(x => x.Assignments)
+                .ThenInclude(x=>x.Course)
                 .SingleOrDefault(x => x.Id == id);
 
             return courses;

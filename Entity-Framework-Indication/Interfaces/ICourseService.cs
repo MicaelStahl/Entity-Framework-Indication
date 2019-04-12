@@ -9,9 +9,15 @@ namespace Entity_Framework_Indication.Interfaces
 {
     public interface ICourseService
     {
-        Course CreateCourse(Course course);
+        bool AddStudent(int? courseId, int? studentId);
+
+        bool AddAssignment(int? id, Assignment assignment);
 
         List<Course> AllCourses();
+
+        Course CreateCourse(Course course);
+
+        Course EditCourse(Course course);
 
         Course FindCourse(int? id);
 
@@ -19,18 +25,12 @@ namespace Entity_Framework_Indication.Interfaces
 
         List<Course> FindCoursesNoTeacher();
 
+        List<Student> FindNonAssignedStudents(int? id);
+
         bool RemoveCourse(int? id);
 
         bool RemoveTeacherFromCourse(int? id);
 
         bool RemoveStudentFromCourse(int? courseId, int? studentId);
-
-        List<Student> FindNonAssignedStudents(int? id);
-
-        Course EditCourse(Course course, List<Assignment> assignments);
-
-        bool AddStudent(int? courseId, int? studentId);
-
-        bool AddAssignment(int? id, Assignment assignment);
     }
 }
