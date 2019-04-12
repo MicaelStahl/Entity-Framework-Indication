@@ -1,0 +1,33 @@
+﻿@model Assignment
+@{
+    ViewData["Title"] = "CreateAssignment";
+}
+
+<br />
+<h1>CreateAssignment</h1>
+<hr />
+<br />
+
+<form class="offset-2" asp-action="CreateAssignment" asp-controller="Course" asp-route-courseId="@Model.Course.Id" asp-route-assignmentId="@Model.Id">
+
+    <label asp-for="Title"></label>
+    <br />
+    <input asp-for="Title" />
+    <br /><br />
+    <label asp-for="Subject"></label>
+    <br />
+    <input asp-for="Subject" />
+    <br /><br />
+    <label asp-for="Description"></label>
+    <br />
+    <input asp-for="Description" />
+    <br /><br />
+    <label asp-for="DueToDate"></label>
+    <br />
+    <input type="datetime-local" asp-for="DueToDate" />
+    <br /><br />
+    <input class="btn btn-success" type="submit" value="Create" />
+
+</form>
+<hr />
+<a class="btn btn-primary offset-2" asp-action="Index" asp-controller="Course">Return</a>

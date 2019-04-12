@@ -38,15 +38,18 @@ namespace Entity_Framework_Indication.Controllers
             }
             return BadRequest();
         }
-        public IActionResult AddTeacherComplete(int? id)
+        public IActionResult AddTeacherComplete(int? teacherId)
         {
-            if (id != null || id != 0)
+            if (teacherId != null || teacherId != 0)
             {
                 var courseId = HttpContext.Session.GetInt32("_AddTeachers");
 
-                _db.AddCourseToTeacher(courseId, id);
+                var boolean = _db.AddCourseToTeacher(courseId, teacherId);
 
-                return RedirectToAction(nameof(Details), "Course", new { courseId });
+                if (boolean)
+                {
+                    return RedirectToAction("Details", "Course", new { courseId });
+                }
             }
             return BadRequest();
         }

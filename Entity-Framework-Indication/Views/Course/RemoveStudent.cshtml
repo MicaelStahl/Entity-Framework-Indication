@@ -15,7 +15,7 @@
             <td>@item.Student.PhoneNumber</td>
 
             <td>
-                <a class="btn btn-danger" asp-action="RemoveStudentComplete" asp-controller="Course" asp-route-studentId="@item.Student.Id">
+                <a class="btn btn-danger" asp-action="RemoveStudentComplete" asp-controller="Course" asp-route-courseId="@item.Course.Id" asp-route-studentId="@item.Student.Id">
                     Pick me pick me
                 </a>
             </td>

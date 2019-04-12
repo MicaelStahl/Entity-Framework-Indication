@@ -3,47 +3,68 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Student Details</h1>
+<br>
+<h1 class="offset-3">Student Details</h1>
+<hr />
+<br />
 
-<table class="table-active offset-1">
-    <tr>
-        <td>@Model.FirstName</td>
+<tr class="offset-2">
+    <td>
+        <a style="float:left" class="btn btn-primary" asp-action="Index" asp-controller="Home">Return</a>
+    </td>
+</tr>
+
+<table class="table-active offset-3 col-4">
+    <tr class="row border-bottom border-dark" style="margin: 0;">
+        <th class="col-3">Firstname</th>
+        <th class="col-3">Secondname</th>
+        <th class="col-3">Class</th>
+        <th class="col-3">Phonenumber</th>
     </tr>
-    <tr>
-        <td>@Model.SecondName</td>
+    <tr class="row" style="margin: 0;">
+        <td class="col-3">@Model.FirstName</td>
+        <td class="col-3">@Model.SecondName</td>
+        <td class="col-3">@Model.SchoolYear</td>
+        <td class="col-3">@Model.PhoneNumber</td>
+        <td class="col-12"><hr /></td>
+
     </tr>
-    <tr>
-        <td>@Model.SchoolYear</td>
-    </tr>
-    <tr>
-        <td>@Model.PhoneNumber</td>
-    </tr>
-    <tr>
-        @if (Model.StudentsCourses != null)
-        {
-            foreach (var item in Model.StudentsCourses)
+    @if (Model.StudentsCourses != null)
+    {
+        <tr class="row border-bottom border-dark" style="margin: 0;">
+            <th class="col-3">Title</th>
+            <th class="col-4">Subject</th>
+            <th class="col-5">Teacher</th>
+        </tr>
+        <tr class="row border-bottom border-dark" style="margin: 0;">
+            @foreach (var item in Model.StudentsCourses)
             {
-                <td>@item.Course.Title</td>
-                <td>@item.Course.Subject</td>
-                <td>@item.Course.Teacher</td>
-                @*<td>@item.Course.Grades</td>*@
+                <td class="col-3">@item.Course.Title</td>
+                <td class="col-4">@item.Course.Subject</td>
+                if (item.Course.Teacher != null)
+                {
+                    <td class="col-5">@item.Course.Teacher.FirstName @item.Course.Teacher.SecondName</td>
+                }
+                else
+                {
+                    <td class="col-5">This course has no teacher.</td>
+                }
             }
-        }
-        else
-        {
+        </tr>
+    }
+    else
+    {
+        <tr class="row" style="margin: 0;">
             <td>This student doesn't have any courses... Consider adding some</td>
-        }
-    </tr>
-    <tr>
+        </tr>
+    }
+    <tr class="row" style="margin: 0;">
         <td>
             @*<a asp-action="UpdateCourse"></a>*@
 
             <a asp-action="Edit" asp-controller="Student" asp-route-id="@Model.Id">
                 <input type="hidden" value="@Model.Id" />
                 <input type="submit" class="btn btn-warning" value="Edit" />
-            </a>
-            <a asp-action="Index" asp-controller="Home">
-                <input type="submit" class="btn btn-primary" value="Return" />
             </a>
         </td>
     </tr>

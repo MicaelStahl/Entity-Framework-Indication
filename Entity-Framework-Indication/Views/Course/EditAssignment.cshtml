@@ -1,0 +1,14 @@
+﻿@model List<Assignment>
+@{
+    ViewData["Title"] = "EditAssignment";
+}
+<br />
+<h1>Edit Assignment</h1>
+<h3>Note: Only the assignment you press "Submit" on will be edited.</h3>
+<hr />
+<br />
+
+@foreach (var item in Model)
+{
+    <partial name="_EditAssignment" model="item" />
+}

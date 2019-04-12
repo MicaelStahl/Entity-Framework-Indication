@@ -20,7 +20,7 @@ namespace Entity_Framework_Indication.ViewModels
 
         public Teacher Teacher { get; set; }
 
-        public List<Assignment> Assignments { get; set; }
+        public List<Assignment> Assignments { get; set; } = new List<Assignment>();
 
         public List<StudentsCourses> StudentsCourses { get; set; }
     }

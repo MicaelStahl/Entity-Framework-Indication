@@ -22,18 +22,6 @@
     <label>Phonenumber</label>
     <br />
     <br />
-    @if (Model.StudentsCourses != null)
-    {
-        foreach (var item in Model.StudentsCourses)
-        {
-            <input type="text" value="@item.Course" disabled />
-        }
-    }
-    else
-    {
-        <p>@Model.FirstName @Model.SecondName doesn't have any classes.</p>
-    }
-    <br />
 
     <input type="submit" class="btn btn-warning" value="Submit" />
     <a class="btn btn-success" asp-action="Index" asp-controller="Home">Go back</a>

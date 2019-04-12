@@ -31,14 +31,116 @@ namespace Entity_Framework_Indication.Models
             return false;
         }
 
+        public List<Course> AllCourses()
+        {
+            return _db.Courses
+                .Include(x => x.StudentsCourses)
+                .ThenInclude(x=>x.Student)
+                .Include(x=>x.Teacher)
+                .Include(x=>x.Assignments)
+                .ToList();
+        }
+
+        public bool AddStudent(int? courseId, int? studentId)
+        {
+            if (courseId != null || studentId != null)
+            {
+                if (courseId == 0 || studentId == 0)
+                {
+                    return false;
+                }
+                var course = _db.Courses.SingleOrDefault(x => x.Id == courseId);
+                var student = _db.Students.SingleOrDefault(x => x.Id == studentId);
+
+                StudentsCourses sc = new StudentsCourses
+                {
+                    CourseId = course.Id,
+                    Course = course,
+                    StudentId = student.Id,
+                    Student = student
+                };
+                _db.Sc.Add(sc);
+
+                _db.SaveChanges();
+
+                return true;
+            }
+            return false;
+        }
+
+        public Course CreateCourse(Course course)
+        {
+            if (string.IsNullOrWhiteSpace(course.Title) ||
+                string.IsNullOrWhiteSpace(course.Subject))
+            {
+                return null;
+            }
+            Course newCourse = new Course()
+            {
+                Title = course.Title,
+                Subject = course.Subject,
+                StudentsCourses = course.StudentsCourses,
+                Teacher = course.Teacher,
+                Assignments = course.Assignments,
+            };
+            _db.Courses.Add(newCourse);
+            _db.SaveChanges();
+
+            return newCourse;
+        }
+
+        public Course EditCourse(Course course, List<Assignment> assignments)
+        {
+            var original = _db.Courses
+                .Include(x=>x.StudentsCourses)
+                .ThenInclude(x=>x.Student)
+                .Include(x=>x.Teacher)
+                .Include(x=>x.Assignments)
+                .SingleOrDefault(x => x.Id == course.Id);
+            if (original != null)
+            {
+                original.Title = course.Title;
+                original.Subject = course.Subject;
+                original.StudentsCourses = course.StudentsCourses;
+                original.Teacher = course.Teacher;
+                original.Assignments = assignments;
+
+                _db.SaveChanges();
+
+                return original;
+            }
+            return course;
+        }
+
+        public Course FindCourse(int? id)
+        {
+            return _db.Courses.SingleOrDefault(x => x.Id == id);
+        }
+
+        public List<Course> FindCoursesNoTeacher()
+        {
+            List<Course> courses = new List<Course>();
+
+            var course = _db.Courses
+                .Include(x => x.Teacher)
+                .ToList();
+
+            foreach (var item in course)
+            {
+                if (item.Teacher == null)
+                {
+                    courses.Add(item);
+                }
+            }
+            return courses;
+        }
+
         public Course FindCourseWithStudents(int? id)
         {
             if (id == null || id == 0)
             {
                 return null;
             }
-            //var course = _db.Courses.SingleOrDefault(x => x.Id == id);
-            // Making it into a list since I'm using Partial Views.
             var courses = _db.Courses
                 .Include(x => x.StudentsCourses)
                 .ThenInclude(x => x.Student)
@@ -46,16 +148,7 @@ namespace Entity_Framework_Indication.Models
                 .Include(x => x.Assignments)
                 .SingleOrDefault(x => x.Id == id);
 
-            // This code is to get a Course instead of a List<Course>
-            //var test = _db.Courses
-            //    .Include(x => x.StudentsCourses)
-            //    .ThenInclude(x => x.Student)
-            //    .Include(x => x.Teacher)
-            //    .Include(x => x.Assignments)
-            //    .SingleOrDefault(x=>x.Id == id);
-
             return courses;
-
         }
 
         public List<Student> FindNonAssignedStudents(int? id)
@@ -89,100 +182,6 @@ namespace Entity_Framework_Indication.Models
                 students.Remove(item);
             }
             return students;
-        }
-
-        public List<Course> FindCoursesNoTeacher()
-        {
-            List<Course> courses = new List<Course>();
-
-            var course = _db.Courses
-                .Include(x => x.Teacher)
-                .ToList();
-
-            foreach (var item in course)
-            {
-                if (item.Teacher == null)
-                {
-                    courses.Add(item);
-                }
-            }
-            return courses;
-        }
-
-        public bool AddStudent(int? courseId, int? studentId)
-        {
-            if (courseId != null || studentId != null)
-            {
-                if (courseId == 0 || studentId == 0)
-                {
-                    return false;
-                }
-                var course = _db.Courses.SingleOrDefault(x => x.Id == courseId);
-                var student = _db.Students.SingleOrDefault(x => x.Id == studentId);
-
-                StudentsCourses sc = new StudentsCourses
-                {
-                    CourseId = course.Id,
-                    Course = course,
-                    StudentId = student.Id,
-                    Student = student
-                };
-                _db.Sc.Add(sc);
-
-                _db.SaveChanges();
-
-                return true;
-            }
-            return false;
-        }
-
-        public List<Course> AllCourses()
-        {
-            return _db.Courses.Include(x => x.StudentsCourses).ToList();
-        }
-
-        public Course CreateCourse(Course course)
-        {
-            if (string.IsNullOrWhiteSpace(course.Title) ||
-                string.IsNullOrWhiteSpace(course.Subject))
-            {
-                return null;
-            }
-            Course newCourse = new Course()
-            {
-                Title = course.Title,
-                Subject = course.Subject,
-                StudentsCourses = course.StudentsCourses,
-                Teacher = course.Teacher,
-                Assignments = course.Assignments,
-            };
-            _db.Courses.Add(newCourse);
-            _db.SaveChanges();
-
-            return newCourse;
-        }
-
-        public Course EditCourse(Course course)
-        {
-            var original = _db.Courses.SingleOrDefault(x => x.Id == course.Id);
-            if (original != null)
-            {
-                original.Title = course.Title;
-                original.Subject = course.Subject;
-                original.StudentsCourses = course.StudentsCourses;
-                original.Teacher = course.Teacher;
-                original.Assignments = course.Assignments;
-
-                _db.SaveChanges();
-
-                return original;
-            }
-            return course;
-        }
-
-        public Course FindCourse(int? id)
-        {
-            return _db.Courses.SingleOrDefault(x => x.Id == id);
         }
 
         public bool RemoveCourse(int? id)
@@ -231,14 +230,11 @@ namespace Entity_Framework_Indication.Models
             {
                 return false;
             }
-            var course = _db.Courses.SingleOrDefault(x => x.Id == id);
-
-            var removeTeacher = _db.Courses
+            var course = _db.Courses
                 .Include(x => x.Teacher)
-                .Where(x => x.Id == id)
-                .ToList();
+                .SingleOrDefault(x => x.Id == id);
 
-            if (removeTeacher == null)
+            if (course == null)
             {
                 return false;
             }

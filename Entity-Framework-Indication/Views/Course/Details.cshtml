@@ -6,9 +6,21 @@
 <br />
 <h1 class="offset-5">@Model.Title</h1>
 <hr />
-<br />
+
+<tr>
+    <td>
+        <a style="float:left" class="btn btn-primary" asp-action="Index" asp-controller="Course">Return</a>
+    </td>
+</tr>
 
 <table class="table-active offset-4 col-4 border">
+    <tr>
+        <td>
+            <a style="float:right" class="btn btn-warning" asp-action="Edit" asp-controller="Course" asp-route-id="@Model.Id">
+                Edit
+            </a>
+        </td>
+    </tr>
     <tr>
         <td>@Model.Title</td>
     </tr>
@@ -36,15 +48,15 @@
             <th class="col-3">Class</th>
             <th class="col-3">Phonenumber</th>
         </tr>
-        @foreach (var item in Model.StudentsCourses)
-        {
-            <tr class="row border" style="margin: 0;">
+        <tr class="row border" style="margin: 0;">
+            @foreach (var item in Model.StudentsCourses)
+            {
                 <td class="col-3">@item.Student.FirstName</td>
                 <td class="col-3">@item.Student.SecondName</td>
                 <td class="col-3">@item.Student.SchoolYear</td>
                 <td class="col-3">@item.Student.PhoneNumber</td>
-            </tr>
-        }
+            }
+        </tr>
     }
     else
     {
@@ -52,20 +64,25 @@
             <td><p>This course doesn't have any students... Consider adding some.</p></td>
         </tr>
     }
+    <tr>
+        <td><br /></td>
+    </tr>
     @if (Model.Assignments.Count != 0 || Model.Assignments != null)
     {
         <tr class="row border" style="margin: 0;">
-            <td><h5>Assignments:</h5></td>
+            <th class="col-2">Title</th>
+            <th class="col-3">Subject</th>
+            <th class="col-4">Description</th>
+            <th class="col-3">Due to</th>
         </tr>
         foreach (var item in Model.Assignments)
         {
-            <tr>
+            <tr class="row border" style="margin: 0;">
 
-                <td>@item.Title</td>
-                <td>@item.Course</td>
-                <td>@item.Subject</td>
-                <td>@item.Description</td>
-                <td>@item.DueToDate</td>
+                <td class="col-2">@item.Title</td>
+                <td class="col-3">@item.Subject</td>
+                <td class="col-4">@item.Description</td>
+                <td class="col-3">@item.DueToDate.ToShortDateString()</td>
             </tr>
         }
     }
@@ -80,8 +97,8 @@
             <a class="btn btn-info" asp-action="AddStudents" asp-controller="Course" asp-route-id="@Model.Id">
                 Add students
             </a>
-            <a class="btn btn-warning" asp-action="Edit" asp-controller="Course" asp-route-id="@Model.Id">
-                Edit
+            <a class="btn btn-info" asp-action="CreateAssignment" asp-controller="Course" asp-route-id="@Model.Id">
+                Create Assignment
             </a>
             @if (Model.Teacher == null)
             {
@@ -89,6 +106,7 @@
                     Add Teacher
                 </a>
             }
+
         </td>
     </tr>
     <tr>
@@ -104,13 +122,6 @@
             </a>
             <a class="btn btn-danger" asp-action="Remove" asp-controller="Course" asp-route-id="@Model.Id">
                 Remove Course
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a asp-action="Index" asp-controller="Course">
-                <input type="submit" class="btn btn-primary" value="Return" />
             </a>
         </td>
     </tr>

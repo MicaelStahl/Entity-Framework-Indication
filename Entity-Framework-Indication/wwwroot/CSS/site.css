@@ -13,6 +13,9 @@
 table {
     color: white;
 }
+tr {
+    margin: 0;
+}
 td {
     padding: 5px;
     text-align: left;

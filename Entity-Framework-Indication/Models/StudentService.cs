@@ -21,18 +21,6 @@ namespace Entity_Framework_Indication.Models
 
         public List<Student> AllStudents()
         {
-            var students = _db.Students
-                .Include(x => x.StudentsCourses)
-                .ThenInclude(x => x.Course)
-                .ThenInclude(x=>x.Assignments)
-                .Include(x=>x.StudentsCourses)
-                .ThenInclude(x=>x.Course)
-                .ThenInclude(x=>x.Teacher)
-                .AsNoTracking()
-                .ToList();
-
-
-
             return _db.Students.ToList();
         }
 
@@ -86,20 +74,17 @@ namespace Entity_Framework_Indication.Models
 
         public Student FindStudent(int? id)
         {
-            return _db.Students.SingleOrDefault(x => x.Id == id);
+            var students = _db.Students
+                    .Include(x => x.StudentsCourses)
+                    .ThenInclude(x => x.Course)
+                    .ThenInclude(x => x.Assignments)
+                    .Include(x => x.StudentsCourses)
+                    .ThenInclude(x => x.Course)
+                    .ThenInclude(x => x.Teacher)
+                    .AsNoTracking()
+                    .SingleOrDefault(x => x.Id == id);
+
+            return students;
         }
-
-        //public List<StudentsCourses> UpdateCourse(int? id, StudentsCourses course)
-        //{
-        //    if (id != null || course != null)
-        //    {
-        //        Student studentCourse = _db.Students.SingleOrDefault(x => x.Id == id);
-
-        //        _db.Students.Add(course);
-        //        studentCourse.Courses.Add(course);
-        //    }
-
-        //    return null;
-        //}
     }
 }

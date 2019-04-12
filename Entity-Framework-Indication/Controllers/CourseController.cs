@@ -17,7 +17,6 @@ namespace Entity_Framework_Indication.Controllers
         private readonly IAssignmentService _assignmentDB;
 
         private const string SessionKeyAddStudents = "_AddStudents";
-        private const string SessionKeyRemoveStudent = "_RemoveStudent";
 
         public CourseController(ICourseService courseService, IAssignmentService assignmentService)
         {
@@ -30,35 +29,6 @@ namespace Entity_Framework_Indication.Controllers
         {
             HttpContext.Session.Remove("_AllStudents");
             return View(_courseDB.AllCourses());
-        }
-
-        [HttpGet]
-        [AutoValidateAntiforgeryToken]
-        public IActionResult AddAssignment(int? id)
-        {
-            if (id != null)
-            {
-                var course = _courseDB.FindCourse(id);
-                if (course == null)
-                {
-                    return NotFound();
-                }
-                return View(course);
-            }
-            return View();
-        }
-        [HttpPost]
-        [AutoValidateAntiforgeryToken]
-        public IActionResult AddAssignment(int? id, Assignment assignment)
-        {
-            if (id != null || ModelState.IsValid)
-            {
-                _courseDB.AddAssignment(id, assignment);
-
-                return RedirectToAction(nameof(Index));
-            }
-
-            return View();
         }
 
         [HttpGet]
@@ -81,23 +51,23 @@ namespace Entity_Framework_Indication.Controllers
         }
         [HttpPost, ActionName("AddStudents")]
         [AutoValidateAntiforgeryToken]
-        public IActionResult AddStudentsComplete(int? id)
+        public IActionResult AddStudentsComplete(int? studentId)
         {
-            if (id != null || id == 0)
+            if (studentId != null || studentId != 0)
             {
                 var courseId = HttpContext.Session.GetInt32("_AddStudents");
 
-                _courseDB.AddStudent(courseId, id);
+                _courseDB.AddStudent(courseId, studentId);
 
                 var studentList = _courseDB.FindNonAssignedStudents(courseId);
 
                 return View(studentList);
             }
-
             return View();
         }
 
-        // the other Actions for adding teacher to course are in TeacherController.
+        // The other Actions for adding teacher to course are in TeacherController.
+        // Simply to annoy Ulf.
         [HttpGet]
         [AutoValidateAntiforgeryToken]
         public IActionResult AddTeacher()
@@ -126,6 +96,33 @@ namespace Entity_Framework_Indication.Controllers
             return View();
         }
 
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult CreateAssignment(int? courseId)
+        {
+            var course = _courseDB.FindCourse(courseId);
+            Assignment assignment = new Assignment() { Course = course };
+
+            return View(assignment);
+        }
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult CreateAssignment(int? courseId, Assignment assignment)
+        {
+            if (courseId != null || courseId != 0 || ModelState.IsValid)
+            {
+                var boolean = _courseDB.AddAssignment(courseId, assignment);
+
+                if (boolean)
+                {
+                    return RedirectToAction(nameof(Details), "Course", new { courseId });
+                }
+                return BadRequest();
+            }
+            return BadRequest();
+        }
+
+        [AutoValidateAntiforgeryToken]
         public IActionResult Details(int? id)
         {
             if (id != null)
@@ -143,7 +140,7 @@ namespace Entity_Framework_Indication.Controllers
         {
             if (id != null)
             {
-                var course = _courseDB.FindCourse((int)id);
+                var course = _courseDB.FindCourseWithStudents((int)id);
 
                 return View(course);
             }
@@ -151,15 +148,51 @@ namespace Entity_Framework_Indication.Controllers
         }
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit([Bind("Id, Title, Subject")]Course course)
+        public IActionResult Edit(Course course, List<Assignment> assignments)
         {
             if (ModelState.IsValid)
             {
-                var newCourse = _courseDB.EditCourse(course);
+                // Testing to see if I can send a list through a view. Might not be possible
+                // but it's good practice. if I succeed, it'll look pretty dope.
+                course.Assignments = assignments;
+                var newCourse = _courseDB.EditCourse(course, assignments);
 
                 return RedirectToAction(nameof(Details), "Course", newCourse);
             }
             return NotFound();
+        }
+
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult EditAssignment(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return BadRequest();
+            }
+            var course = _courseDB.FindCourseWithStudents(id);
+
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return View(course.Assignments);
+
+        }
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]  
+        public IActionResult EditAssignment(Assignment assignment)
+        {
+            // Friendly reminder for myself:
+            // Create a NEW METHOD to edit the assignment and add it into the correct course.
+            // this might be done by using a Session, but prolly with using include in the GET
+            // and then send both the values up.
+            // Goodnight :)
+
+            //var newAssignment = _courseDB.EditAssignment()
+
+            return BadRequest();
         }
 
         [AutoValidateAntiforgeryToken]
@@ -180,7 +213,6 @@ namespace Entity_Framework_Indication.Controllers
             if (id != null || id != 0)
             {
                 var course = _courseDB.FindCourseWithStudents(id);
-                HttpContext.Session.SetInt32("_RemoveStudent", (int)id);
 
                 if (course != null)
                 {
@@ -191,24 +223,20 @@ namespace Entity_Framework_Indication.Controllers
         }
 
         [AutoValidateAntiforgeryToken]
-        public IActionResult RemoveStudentComplete(int? studentId)
+        public IActionResult RemoveStudentComplete(int? courseId, int? studentId)
         {
-            if (studentId == null || studentId == 0)
+            if (studentId == null || studentId == 0 || courseId == null || courseId == 0)
             {
                 return RedirectToAction(nameof(Index));
             }
-            var courseId = HttpContext.Session.GetInt32("_RemoveStudent");
-            if (courseId == null || courseId == 0)
-            {
-                return RedirectToAction(nameof(Index));
-            }
+
             var boolean = _courseDB.RemoveStudentFromCourse(courseId, studentId);
 
-            if (boolean == false)
+            if (boolean)
             {
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Details), "Course", new { courseId });
             }
-            return RedirectToAction(nameof(Details), "Course", new { courseId });
+            return RedirectToAction(nameof(Index));
         }
 
         [AutoValidateAntiforgeryToken]

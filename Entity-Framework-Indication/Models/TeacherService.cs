@@ -19,7 +19,6 @@ namespace Entity_Framework_Indication.Models
 
         public List<Teacher> AllTeachers()
         {
-
             return _db.Teachers.ToList();
         }
 

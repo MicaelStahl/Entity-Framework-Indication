@@ -1,0 +1,22 @@
+﻿@model Assignment
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<form asp-action="EditAssignment" asp-controller="Course" asp-route-id="@Model.Id">
+
+    <label asp-for="Title"></label>
+    <input asp-for="Title" />
+
+    <label asp-for="Subject"></label>
+    <input asp-for="Subject" />
+
+    <label asp-for="Description"></label>
+    <input asp-for="Description" />
+
+    <label asp-for="DueToDate"></label>
+    <input type="datetime" asp-for="DueToDate" />
+
+    <input type="submit" class="btn btn-success" value="Submit" />
+
+</form>
