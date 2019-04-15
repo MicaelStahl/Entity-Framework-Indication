@@ -100,10 +100,14 @@ namespace Entity_Framework_Indication.Controllers
         [AutoValidateAntiforgeryToken]
         public IActionResult CreateAssignment(int? id)
         {
-            var course = _courseDB.FindCourse(id);
-            Assignment assignment = new Assignment() { Course = course };
+            if (id != null || id != 0)
+            {
+                var course = _courseDB.FindCourse(id);
+                Assignment assignment = new Assignment() { Course = course };
 
-            return View(assignment);
+                return View(assignment);
+            }
+            return BadRequest();
         }
         [HttpPost]
         [AutoValidateAntiforgeryToken]
@@ -119,7 +123,7 @@ namespace Entity_Framework_Indication.Controllers
                 {
                     return RedirectToAction(nameof(Details), "Course", new { id });
                 }
-                return BadRequest();
+                return NotFound();
             }
             return BadRequest();
         }
@@ -181,7 +185,7 @@ namespace Entity_Framework_Indication.Controllers
         }
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult EditAssignment(int? courseId,[Bind("Title, Subject, Description, DueToDate")] Assignment assignment)
+        public IActionResult EditAssignment(int? courseId, [Bind("Title, Subject, Description, DueToDate")] Assignment assignment)
         {
             if (courseId == null || courseId == 0)
             {
