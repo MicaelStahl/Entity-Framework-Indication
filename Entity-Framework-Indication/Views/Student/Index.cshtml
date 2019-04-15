@@ -1,24 +1,35 @@
-﻿@model Student
+﻿@model List<Student>
 @{
     ViewData["Title"] = "Index";
 }
-<hr />
-<h3 class="offset-1">Create new student</h3>
-<br />
-<hr />
 
-<form method="post" class="offset-1" asp-action="Create" asp-controller="Student">
-    <input type="text" asp-for="FirstName" placeholder="First name.." value="" />
-    <br />
-    <br />
-    <input type="text" asp-for="SecondName" placeholder="Second name.." value="" />
-    <br />
-    <br />
-    <input type="text" asp-for="SchoolYear" min="1" max="99" placeholder="Schoolyear.." value="" />
-    <br />
-    <br />
-    <input type="text" asp-for="PhoneNumber" placeholder="Phonenumber.." value="" />
-    <br />
-    <br />
-    <input type="submit" class="btn btn-info" value="Create" />
-</form>
+<br />
+<h1 class="offset-2">Home Index</h1>
+<hr />
+<br />
+
+<table class="table-striped offset-2 col-8 marginBottom60">
+    <thead>
+        <tr class="row main-tr">
+            <th class="col-1 border">ID</th>
+            <th class="col-2 border">Firstname</th>
+            <th class="col-2 border">Secondname</th>
+            <th class="col-1 border">Class</th>
+            <th class="col-2 border">Phonenumber</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            @await Html.PartialAsync("_Student", item);
+        }
+    </tbody>
+</table>
+
+<tr>
+    <td>
+        <a class="btn btn-success offset-2" asp-action="Create" asp-controller="Student">
+            Create Student
+        </a>
+    </td>
+</tr>

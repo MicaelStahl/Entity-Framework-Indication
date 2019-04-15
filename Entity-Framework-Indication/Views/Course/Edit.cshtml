@@ -10,26 +10,13 @@
 
 <form class="offset-4" asp-action="Edit" asp-controller="Course" asp-route-id="@Model.Id" method="post">
     <table class="table-active col-4 border">
-        <tr class="row" style="margin: 0;">
+        <tr class="row main-tr">
             <td><input asp-for="Title" value="@Model.Title" /></td>
         </tr>
-        <tr class="row" style="margin: 0;">
+        <tr class="row main-tr">
             <td><input asp-for="Subject" value="@Model.Subject" /></td>
             <td class="col-12"><hr /></td>
         </tr>
-        @if (Model.Assignments.Count != 0)
-        {
-            foreach (var item in Model.Assignments)
-            {
-                <tr class="row" style="margin: 0;">
-                    <td><input value="@item.Title" /></td>
-                    <td><input value="@item.Subject" /></td>
-                    <td><input value="@item.Description" /></td>
-                    <td><input value="@item.DueToDate" /></td>
-                    <td class="col-12"><hr /></td>
-                </tr>
-            }
-        }
         <tr>
             <td>
                 <input type="submit" class="btn btn-success" value="Submit" />
@@ -37,6 +24,5 @@
                 <a class="btn btn-danger" asp-action="Remove" asp-controller="Course" asp-route-id="@Model.Id">Remove Course</a>
             </td>
         </tr>
-
     </table>
 </form>

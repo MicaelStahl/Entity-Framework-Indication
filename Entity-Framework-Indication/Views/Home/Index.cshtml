@@ -1,27 +1,19 @@
-﻿@model List<Student>
+﻿
 @{
     ViewData["Title"] = "Index";
 }
 
 <br />
-<h1>Home Index</h1>
+<h1 class="offset-2">Home Index</h1>
 <hr />
 <br />
 
-<table class="table-striped offset-1 container">
-    <thead>
-        <tr class="row">
-            <th class="col-1 border">ID</th>
-            <th class="col-2 border">Firstname</th>
-            <th class="col-2 border">Secondname</th>
-            <th class="col-1 border">Schoolyear</th>
-            <th class="col-2 border">Phonenumber</th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model)
-    {
-        @await Html.PartialAsync("_Student", item);
-    }
-    </tbody>
-</table>
+<h4 class="offset-2">Hello and welcome to my assignment!</h4>
+<hr />
+
+<h5 class="offset-2">This assignment in and out of itself would probably have been finished a couple of days earlier. <br />
+    but since I realised I was late with turning this assignment in anyways, I decided to add various <br /> things to every main model. (Course, Student, Teacher & Assignment)<br /><br />
+    Things that was added was mostly the ability to remove, edit and watch details for everything.<br />
+    Mostly to expand my knowledge of how Many-To-Many and One-To-Many works.<br /><br />
+    A lot of this is therefore also tests after tests after tests (Ex. a table inside a table in student details)</h5>
+<hr />

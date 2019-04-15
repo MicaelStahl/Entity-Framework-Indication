@@ -9,18 +9,18 @@
 
 <tr>
     <td>
-        <a style="float:left" class="btn btn-primary" asp-action="Index" asp-controller="Course">Return</a>
+        <a class="btn btn-primary offset-1 floatLeft" asp-action="Index" asp-controller="Course">Return</a>
+    </td>
+</tr>
+<tr>
+    <td>
+        <a class="btn btn-danger offset-1 floatLeft" asp-action="Remove" asp-controller="Course" asp-route-id="@Model.Id">
+            Remove Course
+        </a>
     </td>
 </tr>
 
 <table class="table-active offset-4 col-4 border">
-    <tr>
-        <td>
-            <a style="float:right" class="btn btn-warning" asp-action="Edit" asp-controller="Course" asp-route-id="@Model.Id">
-                Edit
-            </a>
-        </td>
-    </tr>
     <tr>
         <td>@Model.Title</td>
     </tr>
@@ -30,7 +30,7 @@
     <tr>
         @if (Model.Teacher != null)
         {
-            <td><p>The teacher for this course is: @Model.Teacher.FirstName</p></td>
+            <td><p>The teacher for this course is: <strong>@Model.Teacher.FirstName @Model.Teacher.SecondName</strong></p></td>
         }
         else
         {
@@ -42,13 +42,13 @@
         <tr>
             <td><h5>Students in selected course</h5></td>
         </tr>
-        <tr class="row border" style="margin: 0;">
+        <tr class="row border main-tr">
             <th class="col-3">Firstname</th>
             <th class="col-3">Secondname</th>
             <th class="col-3">Class</th>
             <th class="col-3">Phonenumber</th>
         </tr>
-        <tr class="row border" style="margin: 0;">
+        <tr class="row border main-tr">
             @foreach (var item in Model.StudentsCourses)
             {
                 <td class="col-3">@item.Student.FirstName</td>
@@ -69,7 +69,7 @@
     </tr>
     @if (Model.Assignments.Count != 0 || Model.Assignments != null)
     {
-        <tr class="row border" style="margin: 0;">
+        <tr class="row border main-tr">
             <th class="col-2">Title</th>
             <th class="col-3">Subject</th>
             <th class="col-4">Description</th>
@@ -77,7 +77,7 @@
         </tr>
         foreach (var item in Model.Assignments)
         {
-            <tr class="row border" style="margin: 0;">
+            <tr class="row border main-tr">
 
                 <td class="col-2">@item.Title</td>
                 <td class="col-3">@item.Subject</td>
@@ -109,6 +109,16 @@
 
         </td>
     </tr>
+    <tr class="row main-tr">
+        <td>
+            <a class="btn btn-warning" asp-action="Edit" asp-controller="Course" asp-route-id="@Model.Id">
+                Edit
+            </a>
+            <a class="btn btn-warning" asp-action="EditAssignment" asp-controller="Course" asp-route-id="@Model.Id">
+                Edit Assignment
+            </a>
+        </td>
+    </tr>
     <tr>
         <td>
             @if (Model.Teacher != null)
@@ -120,8 +130,8 @@
             <a class="btn btn-danger" asp-action="RemoveStudent" asp-controller="Course" asp-route-id="@Model.Id">
                 Remove a Student
             </a>
-            <a class="btn btn-danger" asp-action="Remove" asp-controller="Course" asp-route-id="@Model.Id">
-                Remove Course
+            <a class="btn btn-danger" asp-action="RemoveAssignment" asp-controller="Course" asp-route-id="@Model.Id">
+                Remove Assignment
             </a>
         </td>
     </tr>

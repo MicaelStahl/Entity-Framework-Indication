@@ -24,10 +24,10 @@ namespace Entity_Framework_Indication.Models
 
         public Teacher CreateTeacher(Teacher teacher)
         {
-            if (string.IsNullOrWhiteSpace(teacher.FirstName)
-                || string.IsNullOrWhiteSpace(teacher.SecondName)
-                || string.IsNullOrWhiteSpace(teacher.PhoneNumber)
-                || string.IsNullOrWhiteSpace(teacher.Specification))
+            if (string.IsNullOrWhiteSpace(teacher.FirstName) ||
+                string.IsNullOrWhiteSpace(teacher.SecondName) ||
+                string.IsNullOrWhiteSpace(teacher.PhoneNumber) ||
+                string.IsNullOrWhiteSpace(teacher.Specification))
             {
                 return null;
             }
@@ -39,7 +39,6 @@ namespace Entity_Framework_Indication.Models
                 PhoneNumber = teacher.PhoneNumber,
                 Specification = teacher.Specification,
             };
-
             _db.Teachers.Add(newTeacher);
             _db.SaveChanges();
 
@@ -50,7 +49,7 @@ namespace Entity_Framework_Indication.Models
         {
             var original = _db.Teachers.SingleOrDefault(x => x.Id == teacher.Id);
 
-            if (original != null)
+            if (original != null || teacher != null)
             {
                 original.FirstName = teacher.FirstName;
                 original.SecondName = teacher.SecondName;
@@ -82,7 +81,7 @@ namespace Entity_Framework_Indication.Models
 
         public List<Teacher> FindTeacherWithEverything(int id)
         {
-            var teacher = _db.Teachers
+            var teachers = _db.Teachers
                 .Where(x => x.Id == id)
                 .Include(x => x.Courses)
                 .ThenInclude(x => x.StudentsCourses)
@@ -94,7 +93,7 @@ namespace Entity_Framework_Indication.Models
                 .AsNoTracking()
                 .ToList();
 
-            return teacher;
+            return teachers;
         }
 
         public Teacher FindTeacher(int id)

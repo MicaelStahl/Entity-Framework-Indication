@@ -3,7 +3,7 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-<form asp-action="EditAssignment" asp-controller="Course" asp-route-courseId="@Model.Course.Id" asp-route-assignmentId="@Model.Id">
+<form asp-action="EditAssignment" asp-controller="Course" asp-route-Id="@Model.Id" asp-route-courseId="@Model.Course.Id">
 
     <label asp-for="Title"></label>
     <input asp-for="Title" />

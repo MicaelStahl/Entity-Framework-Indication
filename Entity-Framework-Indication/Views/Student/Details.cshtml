@@ -4,68 +4,152 @@
 }
 
 <br>
-<h1 class="offset-3">Student Details</h1>
+<h1 class="offset-4">Details of @Model.FirstName @Model.SecondName</h1>
 <hr />
 <br />
 
 <tr class="offset-2">
     <td>
-        <a style="float:left" class="btn btn-primary" asp-action="Index" asp-controller="Home">Return</a>
+        <a class="btn btn-primary floatLeft" asp-action="Index" asp-controller="Student">Return</a>
     </td>
 </tr>
 
-<table class="table-active offset-3 col-4">
-    <tr class="row border-bottom border-dark" style="margin: 0;">
+<table class="table-active offset-3 col-6">
+    <tr class="row border-bottom border-dark main-tr">
         <th class="col-3">Firstname</th>
         <th class="col-3">Secondname</th>
         <th class="col-3">Class</th>
         <th class="col-3">Phonenumber</th>
     </tr>
-    <tr class="row" style="margin: 0;">
+    <tr class="row main-tr">
         <td class="col-3">@Model.FirstName</td>
         <td class="col-3">@Model.SecondName</td>
         <td class="col-3">@Model.SchoolYear</td>
         <td class="col-3">@Model.PhoneNumber</td>
         <td class="col-12"><hr /></td>
-
     </tr>
-    @if (Model.StudentsCourses != null)
+</table>
+
+<table class="table-active offset-3 col-6 marginBottom60">
+    <tr>
+        <td><h4 class="offset-4 row border-bottom border-dark main-tr">Courses w/ Assignments</h4></td>
+    </tr>
+
+    @if (Model.StudentsCourses.Count != 0)
     {
-        <tr class="row border-bottom border-dark" style="margin: 0;">
-            <th class="col-3">Title</th>
+        <tr class="row border-bottom border-dark main-tr">
+            <th class="col-4">Title</th>
             <th class="col-4">Subject</th>
-            <th class="col-5">Teacher</th>
+            <th class="col-4">Teacher</th>
         </tr>
-        <tr class="row border-bottom border-dark" style="margin: 0;">
-            @foreach (var item in Model.StudentsCourses)
-            {
-                <td class="col-3">@item.Course.Title</td>
+        @foreach (var item in Model.StudentsCourses)
+        {
+            <tr class="row border-bottom border-dark main-tr">
+                <td class="col-4">@item.Course.Title</td>
                 <td class="col-4">@item.Course.Subject</td>
-                if (item.Course.Teacher != null)
+                @if (item.Course.Teacher != null)
                 {
-                    <td class="col-5">@item.Course.Teacher.FirstName @item.Course.Teacher.SecondName</td>
+                    <td class="col-4">@item.Course.Teacher.FirstName @item.Course.Teacher.SecondName</td>
                 }
                 else
                 {
-                    <td class="col-5">This course has no teacher.</td>
+                    <td>This course has no teacher</td>
                 }
-            }
-        </tr>
+                @if (item.Course.Assignments.Count != 0)
+                {
+                    <td class="col-12 main-tr">
+                        <table class="table-active col-12 marginBottom5">
+                            @foreach (var value in item.Course.Assignments)
+                            {
+                                <tr class="row border-bottom border-dark main-tr">
+                                    <td class="col-2">@value.Title</td>
+                                    <td class="col-3">@value.Subject</td>
+                                    <td class="col-4">@value.Description</td>
+                                    <td class="col-3">@value.DueToDate</td>
+                                </tr>
+                            }
+                        </table>
+                    </td>
+                }
+            </tr>
+        }
     }
     else
     {
-        <tr class="row" style="margin: 0;">
-            <td>This student doesn't have any courses... Consider adding some</td>
+        <tr>
+            <td> This student isn't assigned to any courses</td>
         </tr>
     }
-    <tr class="row" style="margin: 0;">
-        <td>
-            @*<a asp-action="UpdateCourse"></a>*@
-
-            <a asp-action="Edit" asp-controller="Student" asp-route-id="@Model.Id">
-                <input type="hidden" value="@Model.Id" />
-                <input type="submit" class="btn btn-warning" value="Edit" />
-            </a>
-        </td>
-    </tr>
 </table>
+
+@*<table class="table-active offset-3 col-4 marginBottom60">
+        <tr class="row border-bottom border-dark main-tr">
+            <th class="col-3">Firstname</th>
+            <th class="col-3">Secondname</th>
+            <th class="col-3">Class</th>
+            <th class="col-3">Phonenumber</th>
+        </tr>
+        <tr class="row main-tr">
+            <td class="col-3">@Model.FirstName</td>
+            <td class="col-3">@Model.SecondName</td>
+            <td class="col-3">@Model.SchoolYear</td>
+            <td class="col-3">@Model.PhoneNumber</td>
+            <td class="col-12"><hr /></td>
+
+        </tr>
+        @if (Model.StudentsCourses != null)
+        {
+            <tr class="row border-bottom border-dark main-tr">
+                <th class="col-3">Title</th>
+                <th class="col-4">Subject</th>
+                <th class="col-5">Teacher</th>
+            </tr>
+            @foreach (var item in Model.StudentsCourses)
+            {
+                <tr class="row border-bottom border-dark main-tr">
+                    <td class="col-3">@item.Course.Title</td>
+                    <td class="col-4">@item.Course.Subject</td>
+
+                    @if (item.Course.Teacher != null)
+                    {
+                        <td class="col-5">@item.Course.Teacher.FirstName @item.Course.Teacher.SecondName</td>
+                    }
+                    else
+                    {
+                        <td class="col-5">This course has no teacher</td>
+                    }
+                    @if (item.Course.Assignments.Count != 0)
+                    {
+                        <th class="col-2">Title</th>
+                        <th class="col-3">Subject</th>
+                        <th class="col-4">Description</th>
+                        <th class="col-3">Due To Date</th>
+                        @foreach (var value in item.Course.Assignments)
+                        {
+                            <td class="row border-bottom border-top border-dark main-tr">
+                                <p class="col-2">@value.Title</p>
+                                <p class="col-3">@value.Subject</p>
+                                <p class="col-4">@value.Description</p>
+                                <p class="col-3">@value.DueToDate</p>
+                            </td>
+                        }
+                    }
+                </tr>
+            }
+        }
+        else
+        {
+            <tr class="row main-tr">
+                <td>This student doesn't have any courses... Consider adding some</td>
+            </tr>
+        }
+        <tr class="row main-tr">
+            <td>
+                <a asp-action="Edit" asp-controller="Student" asp-route-id="@Model.Id">
+                    <input type="hidden" value="@Model.Id" />
+                    <input type="submit" class="btn btn-warning" value="Edit" />
+                </a>
+            </td>
+        </tr>
+    </table>*@
+

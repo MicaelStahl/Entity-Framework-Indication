@@ -1,75 +1,75 @@
 ﻿@model Teacher
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+
+
 <br />
-<h1 class="offset-5">@Model.FirstName</h1>
+<h1 class="offset-5">@Model.FirstName @Model.SecondName</h1>
 <hr />
 <br />
 
-<table class="table-active offset-3 col-4 row border">
-    <tr class="row">
-        <td class="col-3 border">@Model.FirstName</td>
-        <td class="col-3 border">@Model.SecondName</td>
-        <td class="col-4 border">@Model.Specification</td>
-        <td class="col-2 border">@Model.PhoneNumber</td>
+<table class="table-active AlignCenter marginBottom60">
+    <tr class="row border-bottom border-dark main-tr">
+        <th class="col-2">Firstname</th>
+        <th class="col-3">Secondname</th>
+        <th class="col-4">Specification</th>
+        <th class="col-3">Phonenumber</th>
     </tr>
-    @if (Model.Courses != null)
+    <tr class="row main-tr">
+        <td class="col-2">@Model.FirstName</td>
+        <td class="col-3">@Model.SecondName</td>
+        <td class="col-4">@Model.Specification</td>
+        <td class="col-3">@Model.PhoneNumber</td>
+        <td class="col-12"><hr /></td>
+    </tr>
+
+    @if (Model.Courses.Count != 0)
     {
-        foreach (var item in Model.Courses)
+        @foreach (var item in Model.Courses)
         {
+            <tr class="row border-bottom border-dark main-tr">
+                <th class="col-3 offset-2">Title</th>
+                <th class="col-4 offset-2">Subject</th>
+            </tr>
+            <tr class="row  main-tr">
+                <td class="col-3 offset-2">@item.Title</td>
+                <td class="col-4 offset-2">@item.Subject</td>
+            </tr>
+            if (item.Assignments.Count != 0)
+            {
+            <tr class="border-bottom border-dark main-tr">
 
-            <tr class="row border">
-                <td>
-                    <table>
-                        <tr>
-
-
-                            <td>@item.Title</td>
-                            <td>@item.Subject</td>
-
-                            @if (item.StudentsCourses != null)
-                            {
-                                foreach (var value in item.StudentsCourses)
-                                {
-                                <tr class="row ">
-                                    <td class="col-3">@value.Student.FirstName</td>
-                                    <td class="col-3">@value.Student.SecondName</td>
-                                    <td class="col-3">@value.Student.SchoolYear</td>
-                                    <td class="col-3">@value.Student.PhoneNumber</td>
-                                </tr>
-                            }
-                        }
-                            <tr class="row border">
-                                <td><p>Assignments tied to this course;</p></td>
-                                @if (item.Assignments.Count == 0)
-                                {
-                                    <td>No assignments available. Consider adding some.</td>
-                                }
-                            </tr>
-                            @if (item.Assignments.Count != 0)
-                            {
-                                foreach (var value in item.Assignments)
-                                {
-                                    <tr class="row border">
-                                        <td>@value.Title</td>
-                                        <td>@value.Subject</td>
-                                        <td>@value.Description</td>
-                                        <td>@value.DueToDate</td>
-                                    </tr>
-                                }
-                            }
-                        </table>
-                    </td>
+                <td><p class="offset-3"><strong>Assignments in this course</strong></p></td>
+            </tr>
+                <tr class="row main-tr">
+                    <th class="col-2">Title</th>
+                    <th class="col-3">Subject</th>
+                    <th class="col-4">Description</th>
+                    <th class="col-3">Due to Time</th>
+                    <td class="col-12"><hr /></td>
                 </tr>
-
+                foreach (var value in item.Assignments)
+                {
+                    <tr class="row main-tr">
+                        <td class="col-2">@value.Title</td>
+                        <td class="col-3">@value.Subject</td>
+                        <td class="col-4">@value.Description</td>
+                        <td class="col-3">@value.DueToDate</td>
+                        <td class="col-12"><hr /></td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td><p class="offset-3"><strong>This course has no assignments.</strong></p></td>
+                    <td class="row"><hr /></td>
+                </tr>
             }
         }
-    <tr class="offset-4">
-        <td>
-            <a class="btn btn-warning" asp-action="Edit" asp-controller="Teacher" asp-route-id="@Model.Id">Edit</a>
-            <a class="btn btn-primary" asp-action="Index" asp-controller="Teacher" asp-route-id="@Model.Id">Return</a>
-            <a class="btn btn-danger" asp-action="Remove" asp-controller="Teacher" asp-route-id="@Model.Id">Remove</a>
-        </td>
-    </tr>
+    }
+    else
+    {
+        <tr>
+            <td>This Teacher has no courses assigned to him/her.</td>
+        </tr>
+    }
 </table>

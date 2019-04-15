@@ -6,17 +6,39 @@
 #main-nav {
     margin: 0 0 50px 0;
 }
+
 #funny-llama {
     height: 40px;
     width: 60px;
 }
+
 table {
     color: white;
 }
-tr {
+
+.main-tr {
     margin: 0;
 }
+
 td {
     padding: 5px;
     text-align: left;
 }
+
+.floatLeft {
+    float: left;
+}
+
+.marginBottom5 {
+    margin-bottom: 5px;
+}
+
+.marginBottom60 {
+    margin-bottom: 60px;
+}
+
+.AlignCenter {
+    margin-left: auto;
+    margin-right: auto;
+}
+

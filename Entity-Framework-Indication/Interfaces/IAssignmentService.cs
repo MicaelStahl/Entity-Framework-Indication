@@ -15,7 +15,7 @@ namespace Entity_Framework_Indication.Interfaces
 
         Assignment FindAssignment(int id);
 
-        bool RemoveAssignment(int id);
+        bool RemoveAssignment(int? courseId, int? assignmentId);
 
         bool EditAssignment(Assignment assignment);
     }

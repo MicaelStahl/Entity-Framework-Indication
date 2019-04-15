@@ -1,0 +1,22 @@
+﻿@model  Course
+@{
+    ViewData["Title"] = "RemoveAssignment";
+}
+
+<h1>RemoveAssignment</h1>
+
+<table>
+    @foreach (var item in Model.Assignments)
+    {
+        <tr>
+            <td>@item.Title</td>
+            <td>@item.Subject</td>
+            <td>@item.Description</td>
+            <td>@item.DueToDate</td>
+
+            <td>
+                <a class="btn btn-danger" asp-action="RemoveAssignment" asp-controller="Course" asp-route-assignmentId="@item.Id" asp-route-courseId="@Model.Id"></a>
+            </td>
+        </tr>
+    }
+</table>

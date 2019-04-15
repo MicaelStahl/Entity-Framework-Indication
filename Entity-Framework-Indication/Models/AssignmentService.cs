@@ -66,13 +66,17 @@ namespace Entity_Framework_Indication.Models
             return _db.Assignments.SingleOrDefault(x => x.Id == id);
         }
 
-        public bool RemoveAssignment(int id)
+        public bool RemoveAssignment(int? courseId, int? assignmentId)
         {
-            var assignment = _db.Assignments.SingleOrDefault(x => x.Id == id);
+            var assignment = _db.Assignments.SingleOrDefault(x => x.Id == assignmentId);
+            var course = _db.Courses.SingleOrDefault(x => x.Id == courseId);
 
-            if (assignment != null)
+            if (assignment != null || course != null)
             {
+                course.Assignments.Remove(assignment);
                 _db.Assignments.Remove(assignment);
+
+                _db.SaveChanges();
 
                 return true;
             }

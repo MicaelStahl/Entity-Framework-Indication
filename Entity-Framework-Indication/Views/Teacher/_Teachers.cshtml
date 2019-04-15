@@ -1,7 +1,4 @@
 ﻿@model Teacher
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
 
 <tr class="row">
     <td class="col-1 border">@Model.Id</td>
@@ -15,27 +12,4 @@
     <a asp-action="Details" asp-controller="Teacher" asp-route-id="@Model.Id" class="btn btn-primary">Details</a>
     <a asp-action="Remove" asp-controller="Teacher" asp-route-id="@Model.Id" class="btn btn-danger">Remove</a>
     </td>
-
-    @*@if (Model.Courses != null)
-    {
-        <td><h3>Courses assigned to @Model.FirstName @Model.SecondName</h3></td>
-
-        foreach (var item in Model.Courses)
-        {
-            <td>@item.Title</td>
-            <td>@item.Subject</td>
-            if (item.StudentsCourses != null)
-            {
-                <td><h3>This course has these students</h3></td>
-
-                foreach (var value in item.StudentsCourses)
-                {
-                    <td>@value.Student.FirstName</td>
-                    <td>@value.Student.SecondName</td>
-                    <td>@value.Student.SchoolYear</td>
-                    <td>@value.Student.PhoneNumber</td>
-                }
-            }
-        }
-    }*@
 </tr>

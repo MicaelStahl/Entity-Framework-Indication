@@ -37,9 +37,9 @@ namespace Entity_Framework_Indication.Models
         {
             return _db.Courses
                 .Include(x => x.StudentsCourses)
-                .ThenInclude(x=>x.Student)
-                .Include(x=>x.Teacher)
-                .Include(x=>x.Assignments)
+                .ThenInclude(x => x.Student)
+                .Include(x => x.Teacher)
+                .Include(x => x.Assignments)
                 .ToList();
         }
 
@@ -93,19 +93,13 @@ namespace Entity_Framework_Indication.Models
 
         public Course EditCourse(Course course)
         {
-            var original = _db.Courses
-                .Include(x=>x.StudentsCourses)
-                .ThenInclude(x=>x.Student)
-                .Include(x=>x.Teacher)
-                .Include(x=>x.Assignments)
-                .SingleOrDefault(x => x.Id == course.Id);
+            var original = _db.Courses.SingleOrDefault(x => x.Id == course.Id);
+
             if (original != null)
             {
                 original.Title = course.Title;
                 original.Subject = course.Subject;
-                original.StudentsCourses = course.StudentsCourses;
                 original.Teacher = course.Teacher;
-                original.Assignments = course.Assignments;
 
                 _db.SaveChanges();
 
@@ -148,7 +142,7 @@ namespace Entity_Framework_Indication.Models
                 .ThenInclude(x => x.Student)
                 .Include(x => x.Teacher)
                 .Include(x => x.Assignments)
-                .ThenInclude(x=>x.Course)
+                .ThenInclude(x => x.Course)
                 .SingleOrDefault(x => x.Id == id);
 
             return courses;
@@ -189,7 +183,17 @@ namespace Entity_Framework_Indication.Models
 
         public bool RemoveCourse(int? id)
         {
-            var course = _db.Courses.SingleOrDefault(x => x.Id == id);
+            var course = _db.Courses
+                .Include(x => x.Assignments)
+                .SingleOrDefault(x => x.Id == id);
+
+            if (course.Assignments.Count != 0 || course.Assignments != null)
+            {
+                foreach (var item in course.Assignments)
+                {
+                    _db.Assignments.Remove(item);
+                }
+            }
 
             if (course == null)
             {

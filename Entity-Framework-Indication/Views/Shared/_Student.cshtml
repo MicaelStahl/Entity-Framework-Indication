@@ -1,6 +1,6 @@
 ﻿@model Student
 
-<tr class="row">
+<tr class="row main-tr">
     <td class="col-1 border">@Model.Id</td>
     <td class="col-2 border">@Model.FirstName</td>
     <td class="col-2 border">@Model.SecondName</td>
@@ -13,7 +13,7 @@
             <td class="border">@item.Course</td>
         }
     }
-    <td class=" border">
+    <td class="border">
 
         <a asp-action="Edit" asp-controller="Student" asp-route-id="@Model.Id">
             <input type="hidden" name="Id" value="@Model.Id" />

@@ -20,17 +20,16 @@ namespace Entity_Framework_Indication.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(_db.AllStudents());
         }
 
-        public IActionResult Create(Student student)
+        public IActionResult Create([Bind("FirstName, SecondName, SchoolYear, PhoneNumber")]Student student)
         {
             if (ModelState.IsValid)
             {
                 _db.CreateStudent(student);
 
-                return RedirectToAction(nameof(Index), "Home");
-                //return View(_db.AllStudents());
+                return RedirectToAction(nameof(Index), "Student");
             }
             return RedirectToAction(nameof(Index));
         }
@@ -58,7 +57,7 @@ namespace Entity_Framework_Indication.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Edit(Student student)
+        public IActionResult Edit([Bind("FirstName, SecondName, SchoolYear, PhoneNumber")]Student student)
         {
             if (ModelState.IsValid)
             {
@@ -75,7 +74,7 @@ namespace Entity_Framework_Indication.Controllers
             {
                 _db.DeleteStudent(id);
             }
-            return RedirectToAction(nameof(Index), "Home");
+            return RedirectToAction(nameof(Index), "Student");
         }
     }
 }

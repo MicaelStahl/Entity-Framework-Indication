@@ -48,7 +48,7 @@ namespace Entity_Framework_Indication.Controllers
 
                 if (boolean)
                 {
-                    return RedirectToAction("Details", "Course", new { courseId });
+                    return RedirectToAction("Details", "Course", new { id = courseId });
                 }
             }
             return BadRequest();

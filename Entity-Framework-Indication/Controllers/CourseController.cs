@@ -85,7 +85,7 @@ namespace Entity_Framework_Indication.Controllers
         }
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Create(Course course)
+        public IActionResult Create([Bind("Title, Subject")]Course course)
         {
             if (ModelState.IsValid)
             {
@@ -107,7 +107,7 @@ namespace Entity_Framework_Indication.Controllers
         }
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult CreateAssignment(int? id, Assignment assignment)
+        public IActionResult CreateAssignment(int? id, [Bind("Title, Subject, Description, DueToDate")]Assignment assignment)
         {
             if (id != null || id != 0 || ModelState.IsValid)
             {
@@ -150,7 +150,7 @@ namespace Entity_Framework_Indication.Controllers
         }
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(Course course)
+        public IActionResult Edit([Bind("Title, Subject")]Course course)
         {
             if (ModelState.IsValid)
             {
@@ -181,27 +181,21 @@ namespace Entity_Framework_Indication.Controllers
         }
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult EditAssignment(int? courseId, Assignment assignment)
+        public IActionResult EditAssignment(int? courseId,[Bind("Title, Subject, Description, DueToDate")] Assignment assignment)
         {
             if (courseId == null || courseId == 0)
             {
                 return NotFound();
             }
-            // Friendly reminder for myself:
-            // Create a NEW METHOD to edit the assignment and add it into the correct course.
-            // this might be done by using a Session, but prolly with using include in the GET
-            // and then send both the values up.
-            // Goodnight :)
             if (ModelState.IsValid)
             {
                 var boolean = _assignmentDB.EditAssignment(assignment);
 
                 if (boolean)
                 {
-                    return RedirectToAction(nameof(Details), "Course", new { courseId });
+                    return RedirectToAction(nameof(Details), "Course", new { id = courseId });
                 }
             }
-
             return BadRequest();
         }
 
@@ -215,6 +209,33 @@ namespace Entity_Framework_Indication.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View();
+        }
+
+        [HttpGet]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult RemoveAssignment(int? id)
+        {
+            if (id != null || id != 0)
+            {
+                var course = _courseDB.FindCourseWithStudents(id);
+
+                if (course != null)
+                {
+                    return View(course);
+                }
+                return NotFound();
+            }
+            return BadRequest();
+        }
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public IActionResult RemoveAssignment(int? courseId, int? assignmentId)
+        {
+            if (courseId == null || courseId == 0 || assignmentId == null || assignmentId == 0)
+            {
+                return BadRequest();
+            }
+            return RedirectToAction(nameof(Details), "Course", new { id = courseId });
         }
 
         [AutoValidateAntiforgeryToken]

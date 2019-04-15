@@ -29,7 +29,7 @@ namespace Entity_Framework_Indication.Controllers
 
         public IActionResult Index()
         {
-            return View(_studentDb.AllStudents());
+            return View();
         }
     }
 }

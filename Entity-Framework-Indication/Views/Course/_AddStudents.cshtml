@@ -1,8 +1,8 @@
 ﻿@model Student
 
 <form class="col-12" asp-action="AddStudents" asp-controller="Course" asp-route-studentId="@Model.Id" method="post">
-    <table class="col-3 offset-4 border table-active" style="margin-bottom: 5px;">
-        <tr class="row border" style="margin: 0;">
+    <table class="col-3 offset-4 border table-active marginBottom5">
+        <tr class="row border main-tr">
 
             <td class="col-2">@Model.FirstName</td>
             <td class="col-3">@Model.SecondName</td>
@@ -19,7 +19,7 @@
                 }
             }
         </tr>
-        <tr class="row border" style="margin: 0;">
+        <tr class="row border main-tr">
             <td>
                 <button class="btn btn-success">Add Student</button>
             </td>
